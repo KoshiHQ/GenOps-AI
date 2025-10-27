@@ -1,5 +1,7 @@
 """Policy enforcement for AI governance."""
 
+from __future__ import annotations
+
 import functools
 import logging
 from enum import Enum

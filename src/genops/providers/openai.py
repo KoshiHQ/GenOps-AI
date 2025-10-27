@@ -1,5 +1,7 @@
 """OpenAI provider adapter for GenOps AI governance."""
 
+from __future__ import annotations
+
 import logging
 from typing import Any, Dict, Optional, Tuple
 
