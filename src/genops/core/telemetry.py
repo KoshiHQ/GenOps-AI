@@ -67,66 +67,113 @@ class GenOpsTelemetry:
         model: str = "",
         tokens_input: Optional[int] = None,
         tokens_output: Optional[int] = None,
+        tokens_total: Optional[int] = None,
+        input_tokens: Optional[int] = None,  # alias for tokens_input
+        output_tokens: Optional[int] = None,  # alias for tokens_output
         **metadata,
     ) -> None:
         """Record cost telemetry on a span."""
-        span.set_attribute("genops.cost.amount", cost)
+        span.set_attribute("genops.cost.total", cost)  # Use 'total' instead of 'amount'
         span.set_attribute("genops.cost.currency", currency)
 
         if provider:
             span.set_attribute("genops.cost.provider", provider)
         if model:
             span.set_attribute("genops.cost.model", model)
-        if tokens_input is not None:
-            span.set_attribute("genops.cost.tokens.input", tokens_input)
-        if tokens_output is not None:
-            span.set_attribute("genops.cost.tokens.output", tokens_output)
+        
+        # Handle token parameters with backward compatibility
+        input_tokens_value = tokens_input if tokens_input is not None else input_tokens
+        output_tokens_value = tokens_output if tokens_output is not None else output_tokens
+        
+        if input_tokens_value is not None:
+            span.set_attribute("genops.tokens.input", input_tokens_value)
+        if output_tokens_value is not None:
+            span.set_attribute("genops.tokens.output", output_tokens_value)
+            
+        # Calculate total tokens if not provided
+        if tokens_total is None and input_tokens_value is not None and output_tokens_value is not None:
+            tokens_total = input_tokens_value + output_tokens_value
+        if tokens_total is not None:
+            span.set_attribute("genops.tokens.total", tokens_total)
 
-        # Record additional cost metadata
+        # Record additional cost metadata - handle special cases
         for key, value in metadata.items():
             if value is not None:
-                span.set_attribute(f"genops.cost.{key}", value)
+                if key == "cost_type":
+                    span.set_attribute("genops.cost.type", value)  # Map cost_type to type
+                else:
+                    span.set_attribute(f"genops.cost.{key}", value)
 
     def record_policy(
         self,
         span: trace.Span,
         policy_name: str,
-        policy_result: str = "allowed",
+        policy_result: Optional[str] = None,
         policy_reason: Optional[str] = None,
-        **metadata,
+        result: Optional[str] = None,  # alias for policy_result
+        reason: Optional[str] = None,  # alias for policy_reason
+        metadata: Optional[Dict[str, Any]] = None,
+        **kwargs,
     ) -> None:
         """Record policy enforcement telemetry."""
         span.set_attribute("genops.policy.name", policy_name)
-        span.set_attribute("genops.policy.result", policy_result)
+        
+        # Handle result parameter with backward compatibility
+        result_value = policy_result if policy_result is not None else result
+        if result_value is not None:
+            span.set_attribute("genops.policy.result", result_value)
+        
+        # Handle reason parameter with backward compatibility
+        reason_value = policy_reason if policy_reason is not None else reason
+        if reason_value is not None:
+            span.set_attribute("genops.policy.reason", reason_value)
 
-        if policy_reason:
-            span.set_attribute("genops.policy.reason", policy_reason)
-
-        # Record additional policy metadata
-        for key, value in metadata.items():
+        # Handle metadata parameter separately and flatten it
+        if metadata:
+            for key, value in metadata.items():
+                if value is not None:
+                    span.set_attribute(f"genops.policy.metadata.{key}", value)
+                    
+        # Record additional policy metadata from kwargs
+        for key, value in kwargs.items():
             if value is not None:
                 span.set_attribute(f"genops.policy.{key}", value)
 
     def record_evaluation(
         self,
         span: trace.Span,
-        evaluation_name: str,
-        score: float,
+        evaluation_name: Optional[str] = None,
+        score: float = 0.0,
         threshold: Optional[float] = None,
         passed: Optional[bool] = None,
-        **metadata,
+        metric_name: Optional[str] = None,  # alias for evaluation_name
+        evaluator: Optional[str] = None,
+        metadata: Optional[Dict[str, Any]] = None,
+        **kwargs,
     ) -> None:
         """Record evaluation telemetry."""
-        span.set_attribute("genops.eval.name", evaluation_name)
+        # Handle name parameter with backward compatibility
+        name_value = evaluation_name if evaluation_name is not None else metric_name
+        if name_value is not None:
+            span.set_attribute("genops.eval.metric", name_value)  # Use 'metric' instead of 'name'
+        
         span.set_attribute("genops.eval.score", score)
 
         if threshold is not None:
             span.set_attribute("genops.eval.threshold", threshold)
         if passed is not None:
             span.set_attribute("genops.eval.passed", passed)
+        if evaluator is not None:
+            span.set_attribute("genops.eval.evaluator", evaluator)
 
-        # Record additional evaluation metadata
-        for key, value in metadata.items():
+        # Handle metadata parameter separately and flatten it
+        if metadata:
+            for key, value in metadata.items():
+                if value is not None:
+                    span.set_attribute(f"genops.eval.metadata.{key}", value)
+        
+        # Record additional evaluation metadata from kwargs
+        for key, value in kwargs.items():
             if value is not None:
                 span.set_attribute(f"genops.eval.{key}", value)
 
@@ -134,23 +181,37 @@ class GenOpsTelemetry:
         self,
         span: trace.Span,
         budget_name: str,
-        budget_limit: float,
-        budget_used: float,
+        budget_limit: Optional[float] = None,
+        budget_used: Optional[float] = None,
         budget_remaining: Optional[float] = None,
+        allocated: Optional[float] = None,  # alias for budget_limit
+        consumed: Optional[float] = None,  # alias for budget_used
+        remaining: Optional[float] = None,  # alias for budget_remaining
         **metadata,
     ) -> None:
         """Record budget telemetry."""
         span.set_attribute("genops.budget.name", budget_name)
-        span.set_attribute("genops.budget.limit", budget_limit)
-        span.set_attribute("genops.budget.used", budget_used)
+        
+        # Handle parameter aliases
+        limit_value = budget_limit if budget_limit is not None else allocated
+        used_value = budget_used if budget_used is not None else consumed
+        remaining_value = budget_remaining if budget_remaining is not None else remaining
+        
+        if limit_value is not None:
+            span.set_attribute("genops.budget.allocated", limit_value)  # Use 'allocated' instead of 'limit'
+        if used_value is not None:
+            span.set_attribute("genops.budget.consumed", used_value)  # Use 'consumed' instead of 'used'
 
-        if budget_remaining is None:
-            budget_remaining = budget_limit - budget_used
-        span.set_attribute("genops.budget.remaining", budget_remaining)
+        # Calculate remaining if not provided but limit and used are available
+        if remaining_value is None and limit_value is not None and used_value is not None:
+            remaining_value = limit_value - used_value
+        if remaining_value is not None:
+            span.set_attribute("genops.budget.remaining", remaining_value)
 
         # Calculate and record budget utilization percentage
-        utilization = (budget_used / budget_limit) * 100 if budget_limit > 0 else 0
-        span.set_attribute("genops.budget.utilization_percent", utilization)
+        if limit_value is not None and used_value is not None and limit_value > 0:
+            utilization = (used_value / limit_value) * 100
+            span.set_attribute("genops.budget.utilization_percent", utilization)
 
         # Record additional budget metadata
         for key, value in metadata.items():

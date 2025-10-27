@@ -118,13 +118,15 @@ class PolicyEngine:
     ) -> PolicyEvaluationResult:
         """Evaluate cost limit policy."""
         max_cost = policy.conditions.get("max_cost", float("inf"))
-        estimated_cost = context.get("estimated_cost", 0)
+        # Check both 'cost' and 'estimated_cost' for backwards compatibility
+        estimated_cost = context.get("cost", context.get("estimated_cost", 0))
 
         if estimated_cost > max_cost:
             return PolicyEvaluationResult(
                 policy.name,
                 policy.enforcement_level,
-                f"Estimated cost ${estimated_cost:.4f} exceeds limit ${max_cost:.4f}",
+                f"Cost limit exceeded: ${estimated_cost:.4f} exceeds limit ${max_cost:.4f}",
+                metadata={"limit": max_cost, "actual": estimated_cost}
             )
 
         return PolicyEvaluationResult(policy.name, PolicyResult.ALLOWED, None)
@@ -134,13 +136,14 @@ class PolicyEngine:
     ) -> PolicyEvaluationResult:
         """Evaluate rate limit policy."""
         # Simplified rate limiting - in production, use Redis or similar
-        max_requests = policy.conditions.get("max_requests_per_minute", 100)
-        current_requests = context.get("current_requests", 0)
+        max_requests = policy.conditions.get("max_requests_per_minute", policy.conditions.get("max_requests", 100))
+        # Check multiple keys for backwards compatibility
+        current_requests = context.get("request_count", context.get("requests_count", context.get("current_requests", 0)))
 
         if current_requests >= max_requests:
             return PolicyEvaluationResult(
                 policy.name,
-                PolicyResult.RATE_LIMITED,
+                policy.enforcement_level,  # Use configured enforcement level
                 f"Rate limit exceeded: {current_requests}/{max_requests} requests per minute",
             )
 
