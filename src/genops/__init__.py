@@ -10,7 +10,7 @@ from genops.auto_instrumentation import (
     status,
     uninstrument,
 )
-from genops.core.context_manager import track
+from genops.core.context_manager import track, track_enhanced
 from genops.core.policy import enforce_policy
 from genops.core.telemetry import GenOpsTelemetry
 from genops.core.tracker import track_usage
@@ -19,6 +19,7 @@ __all__ = [
     # Core functions
     "track_usage",
     "track",
+    "track_enhanced",
     "enforce_policy",
     "GenOpsTelemetry",
     # Auto-instrumentation

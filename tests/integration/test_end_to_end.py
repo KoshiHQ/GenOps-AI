@@ -412,7 +412,7 @@ class TestEndToEndWorkflows:
         """Test context manager integration with governance tracking."""
 
         # Test nested context managers with governance
-        with genops.track(
+        with genops.track_enhanced(
             operation_name="batch_processing",
             team="data-platform",
             project="ml-pipeline",
@@ -420,19 +420,19 @@ class TestEndToEndWorkflows:
             # Record batch-level governance data
             outer_span.record_budget(
                 budget_name="monthly_ml_budget",
-                allocated=1000.0,
-                consumed=150.0,
-                remaining=850.0,
+                budget_limit=1000.0,
+                budget_used=150.0,
+                budget_remaining=850.0,
             )
 
             # Nested operation
-            with genops.track(
+            with genops.track_enhanced(
                 operation_name="individual_inference", feature="prediction"
             ) as inner_span:
                 # Record individual operation data
                 inner_span.record_cost(cost=2.5, currency="USD")
                 inner_span.record_evaluation(
-                    metric_name="accuracy", score=0.92, evaluator="automated"
+                    evaluation_name="accuracy", score=0.92, evaluator="automated"
                 )
 
         # Verify nested telemetry
@@ -447,12 +447,12 @@ class TestEndToEndWorkflows:
         assert outer_attrs["genops.operation.name"] == "batch_processing"
         assert outer_attrs["genops.team"] == "data-platform"
         assert outer_attrs["genops.budget.name"] == "monthly_ml_budget"
-        assert outer_attrs["genops.budget.allocated"] == 1000.0
+        assert outer_attrs["genops.budget.limit"] == 1000.0
 
         # Verify inner span governance data
         inner_attrs = inner_span.attributes
         assert inner_attrs["genops.operation.name"] == "individual_inference"
         assert inner_attrs["genops.feature"] == "prediction"
-        assert inner_attrs["genops.cost.total"] == 2.5
-        assert inner_attrs["genops.eval.metric"] == "accuracy"
+        assert inner_attrs["genops.cost.amount"] == 2.5
+        assert inner_attrs["genops.eval.name"] == "accuracy"
         assert inner_attrs["genops.eval.score"] == 0.92

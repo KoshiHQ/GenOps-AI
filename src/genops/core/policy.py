@@ -35,6 +35,22 @@ class PolicyViolationError(Exception):
         super().__init__(f"Policy '{policy_name}' violation: {reason}")
 
 
+class PolicyEvaluationResult:
+    """Result of policy evaluation with details."""
+
+    def __init__(
+        self,
+        policy_name: str,
+        result: PolicyResult,
+        reason: Optional[str] = None,
+        metadata: Optional[Dict[str, Any]] = None,
+    ):
+        self.policy_name = policy_name
+        self.result = result
+        self.reason = reason
+        self.metadata = metadata or {}
+
+
 class PolicyConfig:
     """Configuration for a governance policy."""
 

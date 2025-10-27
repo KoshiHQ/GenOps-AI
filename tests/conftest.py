@@ -51,17 +51,21 @@ from genops.core.telemetry import GenOpsTelemetry
 @pytest.fixture
 def mock_otel_setup() -> Generator[SpanRecorder, None, None]:
     """Set up in-memory OpenTelemetry for isolated testing."""
-    # Create a tracer provider with test resource
-    resource = Resource.create({"service.name": "genops-test"})
-    tracer_provider = TracerProvider(resource=resource)
+    # Get existing tracer provider or create new one
+    current_tracer_provider = trace.get_tracer_provider()
+    
+    if not hasattr(current_tracer_provider, "add_span_processor"):
+        # Create a tracer provider with test resource only if none exists
+        resource = Resource.create({"service.name": "genops-test"})
+        tracer_provider = TracerProvider(resource=resource)
+        trace.set_tracer_provider(tracer_provider)
+    else:
+        tracer_provider = current_tracer_provider
 
     # Set up span recorder for verification
     span_recorder = SpanRecorder()
     span_processor = SimpleSpanProcessor(span_recorder)
     tracer_provider.add_span_processor(span_processor)
-
-    # Set the tracer provider
-    trace.set_tracer_provider(tracer_provider)
 
     yield span_recorder
 
