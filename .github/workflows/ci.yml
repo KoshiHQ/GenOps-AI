@@ -1,0 +1,146 @@
+name: CI
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main, develop ]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ["3.8", "3.9", "3.10", "3.11", "3.12"]
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v4
+      with:
+        python-version: ${{ matrix.python-version }}
+
+    - name: Cache pip dependencies
+      uses: actions/cache@v3
+      with:
+        path: ~/.cache/pip
+        key: ${{ runner.os }}-pip-${{ hashFiles('**/pyproject.toml') }}
+        restore-keys: |
+          ${{ runner.os }}-pip-
+
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -e ".[dev,all]"
+
+    - name: Lint with ruff
+      run: |
+        ruff check src/ tests/
+        ruff format --check src/ tests/
+
+    - name: Type check with mypy
+      run: |
+        mypy src/genops/
+
+    - name: Test with pytest
+      run: |
+        pytest tests/ -v --cov=src/genops --cov-report=xml --cov-report=term-missing
+
+    - name: Upload coverage to Codecov
+      uses: codecov/codecov-action@v3
+      with:
+        file: ./coverage.xml
+        flags: unittests
+        name: codecov-umbrella
+        fail_ci_if_error: false
+
+    - name: Test CLI functionality
+      run: |
+        genops --version
+        genops status
+        python test_quick.py
+
+  package-test:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: "3.11"
+
+    - name: Install build dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install build twine
+
+    - name: Build package
+      run: python -m build
+
+    - name: Check package
+      run: |
+        twine check dist/*
+        
+    - name: Test package installation
+      run: |
+        pip install dist/*.whl
+        python -c "import genops; print(f'GenOps v{genops.__version__} imported successfully')"
+
+  security-scan:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: "3.11"
+
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -e ".[dev]"
+        pip install safety bandit
+
+    - name: Security scan with safety
+      run: |
+        safety check
+
+    - name: Security scan with bandit
+      run: |
+        bandit -r src/genops/ -f json -o bandit-report.json || true
+        
+    - name: Upload bandit results
+      uses: actions/upload-artifact@v3
+      if: always()
+      with:
+        name: bandit-results
+        path: bandit-report.json
+
+  integration-test:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: "3.11"
+
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -e ".[dev,all]"
+
+    - name: Run integration tests
+      run: |
+        pytest tests/integration/ -v -m integration
+
+    - name: Test examples
+      run: |
+        cd examples/
+        python auto_instrumentation.py
+        python basic_usage.py
+        python otel_setup.py
