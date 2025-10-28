@@ -16,7 +16,10 @@ install: ## Install GenOps AI for production use
 
 dev-install: ## Install GenOps AI for development (editable)
 	pip install -e ".[dev,openai,anthropic]"
-	@echo "✅ Development environment ready!"
+	pip install pre-commit
+	pre-commit install
+	pre-commit install --hook-type commit-msg
+	@echo "✅ Development environment ready with pre-commit hooks!"
 
 # Testing
 test: ## Run tests
@@ -116,7 +119,13 @@ publish: build ## Publish to PyPI (requires authentication)
 	twine upload dist/*
 
 # Git helpers
-pre-commit: check ## Run pre-commit checks
+pre-commit-check: ## Run pre-commit hooks manually
+	pre-commit run --all-files
+
+pre-commit-update: ## Update pre-commit hook versions
+	pre-commit autoupdate
+
+pre-commit: check ## Run pre-commit checks (legacy)
 	@echo "🔍 Pre-commit validation..."
 	@if git diff --cached --name-only | grep -E '\.(py)$$' >/dev/null; then \
 		echo "🔧 Running checks on staged files..."; \
