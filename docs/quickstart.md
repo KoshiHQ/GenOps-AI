@@ -272,7 +272,7 @@ Congratulations! You now have AI governance telemetry flowing. Here are some nex
 ### **Advanced Features**
 - 🏗️ **Add more providers** - AWS Bedrock, Google Gemini (coming soon)
 - 🔗 **Integrate frameworks** - LangChain, LlamaIndex (coming soon)
-- 🏢 **Enterprise deployment** - Connect to [Koshi control plane](https://getkoshi.ai)
+- 🏢 **Enterprise deployment** - Scale governance across your organization
 
 ### **Community & Learning**
 - 📖 **Read the full documentation** - [GitHub Docs](https://github.com/KoshiHQ/GenOps-AI/tree/main/docs)

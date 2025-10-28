@@ -74,7 +74,7 @@ GenOps AI extends **OpenTelemetry** with governance semantics for AI systems, en
 - **🛡️ Policy Enforcement** - Automated governance with configurable limits and content filtering
 - **📊 Budget Management** - Spend controls with alerts and automated enforcement  
 - **🔍 Compliance Automation** - Audit trails and evaluation metrics for regulatory requirements
-- **🏢 Enterprise Governance** - Feed dashboards, FinOps tools, and control planes
+- **📈 Observability Integration** - Feed dashboards, FinOps tools, and monitoring platforms
 
 **Built alongside [OpenLLMetry](https://github.com/traceloop/openllmetry), interoperable by design, independent by governance.**
 

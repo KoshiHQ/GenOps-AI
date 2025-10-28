@@ -16,22 +16,6 @@ Where **OpenLLMetry** defines *what* to trace (LLM prompts, completions, tokens)
 
 ---
 
-### Brand Architecture (Two-Tier System)
-
-1. **GenOps AI** – Open-source standard (this repository)
-2. **Koshi** – Commercial control plane (getkoshi.ai) providing managed dashboards, policies, and compliance for enterprises built on top of GenOps telemetry
-
----
-
-### Strategic Goals
-
-* **Phase 1:** OSS adoption → 1K+ GitHub stars, 10+ provider integrations
-
-* **Phase 2:** Commercial bridge → Koshi beta with early OSS adopters
-* **Phase 3:** Ecosystem growth → FinOps Foundation and enterprise integration
-
----
-
 ## Project Overview
 
 This Python SDK is the reference implementation of **GenOps-OTel** — the open-source governance telemetry layer for AI systems.
@@ -40,7 +24,7 @@ It provides a **vendor-neutral, OTel-native SDK** that enables teams to:
 
 * Capture and export governance signals: cost, budget, policy, compliance, and evaluation metrics
 * Integrate with existing observability stacks (Datadog, Honeycomb, Grafana Tempo, etc.)
-* Feed data into enterprise governance dashboards (Koshi, or self-managed alternatives)
+* Feed data into governance dashboards and enterprise control planes
 
 ---
 
@@ -49,7 +33,7 @@ It provides a **vendor-neutral, OTel-native SDK** that enables teams to:
 * Extend the OpenTelemetry signal model to cover **governance semantics** (`genops.cost.*`, `genops.policy.*`, `genops.eval.*`, `genops.budget.*`)
 * Provide **interoperable adapters** for LLM providers and frameworks (OpenAI, Anthropic, Gemini, Bedrock, Mistral, LangChain, etc.)
 * Enable **transparent per-team, per-feature, per-customer cost governance** across AI systems
-* Serve as the **foundation for enterprise governance automation** in Koshi
+* Serve as the **foundation for enterprise governance automation**
 
 ---
 
@@ -58,7 +42,7 @@ It provides a **vendor-neutral, OTel-native SDK** that enables teams to:
 ### Licensing & Governance
 
 * **License:** Apache 2.0 (permissive and OSS-friendly)
-* **Governance:** GenOps AI maintains core stewardship (like Vercel→Next.js)
+* **Governance:** Open community development with maintainer stewardship
 * **Community:** Public RFC process for spec evolution; open contribution model
 * **Vendor Neutrality:** Aligns with OpenTelemetry and OpenLLMetry specs; avoids lock-in with any observability or model vendor
 
@@ -157,41 +141,15 @@ Compatible with:
 
 ---
 
-## Commercial Bridge: Koshi
-
-**Koshi** is the enterprise control plane built on GenOps-OTel.
-It's the managed governance platform for **CFOs, Compliance, and AI program leaders** — providing dashboards, alerts, policies, and budget management powered by GenOps telemetry.
-
-| Layer             | Audience                  | Purpose                                                     |
-| ----------------- | ------------------------- | ----------------------------------------------------------- |
-| **GenOps (open)** | Developers, MLOps, FinOps | Emit cost, policy, and evaluation signals via OpenTelemetry |
-| **Koshi (paid)**  | CFOs, Risk, AI leaders    | Aggregate, visualize, and automate governance across teams  |
-
-> **Analogy:**
-> OpenTelemetry → Honeycomb
-> OpenLLMetry → Traceloop
-> **GenOps → Koshi**
-
-**Separation principle:**
-GenOps remains fully open and usable standalone.
-Koshi commercializes **aggregation, alerting, and compliance automation** — not data access or lock-in.
-
----
-
 ## Success Metrics
 
-### OSS Metrics
+### Community Goals
 
 * 1K+ GitHub stars
-* 10+ provider adapters
+* 10+ provider adapters  
 * 5+ supported observability platforms
 * Community RFC adoption and schema contributions
-
-### Commercial Readiness
-
-* 25+ active OSS org users feeding data into Koshi
-* 3 pilot enterprise integrations (CFO / Compliance leads)
-* Active FinOps Foundation dialogue or partnership
+* Active FinOps Foundation and enterprise adoption
 
 ---
 
@@ -210,4 +168,4 @@ Koshi commercializes **aggregation, alerting, and compliance automation** — no
 > GenOps AI builds *alongside* OpenLLMetry on the OpenTelemetry foundation —
 > **interoperable by design, independent by governance.**
 > It defines open-source semantics for AI cost, policy, and compliance telemetry.
-> Koshi is the commercial layer that transforms that telemetry into dashboards, budgets, and compliance automation for enterprise teams.
+> Built and maintained as an open-source project under the Apache 2.0 license.

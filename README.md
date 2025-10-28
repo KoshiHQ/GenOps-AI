@@ -25,9 +25,9 @@ While [OpenLLMetry](https://github.com/traceloop/openllmetry) tells you *what* y
 - 🛡️ **Policy Enforcement** with configurable limits and content filtering  
 - 📊 **Budget Tracking** with automated alerts and spend controls
 - 🔍 **Compliance Automation** with evaluation metrics and audit trails
-- 🏢 **Enterprise Governance** feeding dashboards, FinOps, and control planes
+- 📈 **Observability Integration** with your existing monitoring stack
 
-**Built alongside OpenLLMetry, interoperable by design, independent by governance.**
+**Built on OpenTelemetry standards, works alongside OpenLLMetry and other observability tools.**
 
 ---
 
@@ -376,7 +376,7 @@ def process_customer_requests(customer_id: str, requests: list):
 
 ---
 
-## 🏢 **Enterprise & Production**
+## 🏢 **Production Ready**
 
 ### **Compliance & Audit Trails**
 GenOps AI automatically creates detailed audit logs for:
@@ -385,19 +385,13 @@ GenOps AI automatically creates detailed audit logs for:
 - **Data flow tracking** for privacy and compliance requirements  
 - **Model usage patterns** for governance and risk management
 
-### **FinOps Integration**
-Perfect for financial operations teams:
+### **Observability Integration**
+Works with your existing tools and workflows:
 - **Per-customer cost allocation** for accurate billing
-- **Department/team spend tracking** for budget management
+- **Team and department spend tracking** for budget management
 - **Feature-level cost analysis** for product decisions
 - **Model efficiency metrics** for optimization opportunities
-
-### **Enterprise Integration**
-GenOps AI telemetry can be exported to your existing observability stack:
-- **Real-time dashboards** for executives and compliance teams
-- **Automated policy management** across multiple teams and projects  
-- **Advanced analytics** for cost optimization and risk management
-- **Enterprise-grade security** for governance at scale
+- **Real-time dashboards** using your current observability platform
 
 ---
 
@@ -437,9 +431,8 @@ Licensed under the Apache License, Version 2.0. See [LICENSE](LICENSE) for detai
 - **For FinOps Teams**: Get precise cost attribution and budget controls
 - **For Compliance Teams**: Automated policy enforcement with audit trails
 - **For Product Teams**: Feature-level AI cost analysis and optimization insights
-- **For Executives**: Enterprise-wide AI governance visibility and control
 
-**Start with the open-source GenOps AI SDK. Scale with your existing enterprise observability platform.**
+**Open source, OpenTelemetry-native, and designed to work with your existing stack.**
 
 ---
 
