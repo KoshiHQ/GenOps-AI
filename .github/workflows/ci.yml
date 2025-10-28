@@ -6,141 +6,206 @@ on:
   pull_request:
     branches: [ main, develop ]
 
+env:
+  PYTHON_VERSION: "3.11"
+  
 jobs:
   test:
+    name: Test Python ${{ matrix.python-version }}
     runs-on: ubuntu-latest
     strategy:
       matrix:
         python-version: ["3.9", "3.10", "3.11", "3.12"]
-
+      fail-fast: false
+      
     steps:
     - uses: actions/checkout@v4
-
+    
     - name: Set up Python ${{ matrix.python-version }}
       uses: actions/setup-python@v4
       with:
         python-version: ${{ matrix.python-version }}
-
-    - name: Cache pip dependencies
+        
+    - name: Cache dependencies
       uses: actions/cache@v3
       with:
         path: ~/.cache/pip
-        key: ${{ runner.os }}-pip-${{ hashFiles('**/pyproject.toml') }}
+        key: ${{ runner.os }}-pip-${{ hashFiles('pyproject.toml') }}
         restore-keys: |
           ${{ runner.os }}-pip-
-
+          
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
-        pip install -e ".[dev,all]"
-
-    - name: Lint with ruff
+        pip install -e ".[dev,openai,anthropic]"
+        
+    - name: Run tests
       run: |
-        ruff check src/ tests/
-        ruff format --check src/ tests/
-
-    - name: Type check with mypy
-      run: |
-        mypy src/genops/
-
-    - name: Test with pytest
-      run: |
-        pytest tests/ -v --cov=src/genops --cov-report=xml --cov-report=term-missing
-
-    - name: Upload coverage to Codecov
+        pytest tests/ -v --tb=short --cov=src/genops --cov-report=xml --cov-report=term
+        
+    - name: Upload coverage reports
+      if: matrix.python-version == '3.11'
       uses: codecov/codecov-action@v3
       with:
         file: ./coverage.xml
-        flags: unittests
-        name: codecov-umbrella
-        fail_ci_if_error: false
+        fail_ci_if_error: true
 
-    - name: Test CLI functionality
-      run: |
-        genops --version
-        genops status
-        python test_quick.py
-
-  package-test:
+  lint:
+    name: Lint and Format Check
     runs-on: ubuntu-latest
+    
     steps:
     - uses: actions/checkout@v4
-
+    
     - name: Set up Python
       uses: actions/setup-python@v4
       with:
-        python-version: "3.11"
-
-    - name: Install build dependencies
-      run: |
-        python -m pip install --upgrade pip
-        pip install build twine
-
-    - name: Build package
-      run: python -m build
-
-    - name: Check package
-      run: |
-        twine check dist/*
+        python-version: ${{ env.PYTHON_VERSION }}
         
-    - name: Test package installation
-      run: |
-        pip install dist/*.whl
-        python -c "import genops; print(f'GenOps v{genops.__version__} imported successfully')"
-
-  security-scan:
-    runs-on: ubuntu-latest
-    steps:
-    - uses: actions/checkout@v4
-
-    - name: Set up Python
-      uses: actions/setup-python@v4
-      with:
-        python-version: "3.11"
-
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
         pip install -e ".[dev]"
-        pip install safety bandit
-
-    - name: Security scan with safety
-      run: |
-        safety check
-
-    - name: Security scan with bandit
-      run: |
-        bandit -r src/genops/ -f json -o bandit-report.json || true
         
-    - name: Upload bandit results
-      uses: actions/upload-artifact@v4
-      if: always()
-      with:
-        name: bandit-results
-        path: bandit-report.json
+    - name: Run ruff linter
+      run: ruff check src/ tests/ examples/
+      
+    - name: Run ruff formatter
+      run: ruff format --check src/ tests/ examples/
 
-  integration-test:
+  type-check:
+    name: Type Check
     runs-on: ubuntu-latest
+    
     steps:
     - uses: actions/checkout@v4
-
+    
     - name: Set up Python
       uses: actions/setup-python@v4
       with:
-        python-version: "3.11"
-
+        python-version: ${{ env.PYTHON_VERSION }}
+        
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
-        pip install -e ".[dev,all]"
+        pip install -e ".[dev]"
+        
+    - name: Run mypy
+      run: mypy src/genops/
 
-    - name: Run integration tests
+  security:
+    name: Security Scan
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: ${{ env.PYTHON_VERSION }}
+        
+    - name: Install dependencies
       run: |
-        pytest tests/integration/ -v -m integration
+        python -m pip install --upgrade pip
+        pip install bandit[toml] safety
+        
+    - name: Run bandit security scan
+      run: bandit -c pyproject.toml -r src/
+      
+    - name: Check for known vulnerabilities
+      run: safety check
 
-    - name: Test examples
+  examples:
+    name: Test Examples
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: ${{ env.PYTHON_VERSION }}
+        
+    - name: Install dependencies
       run: |
-        cd examples/
-        python auto_instrumentation.py
-        python basic_usage.py
-        python otel_setup.py
+        python -m pip install --upgrade pip
+        pip install -e ".[dev,openai,anthropic]"
+        
+    - name: Test basic examples
+      run: |
+        python examples/basic_usage.py
+        python examples/auto_instrumentation.py
+        
+    - name: Test governance scenarios (without API keys)
+      env:
+        GENOPS_DEMO_MODE: "true"
+      run: |
+        python examples/governance_scenarios/budget_enforcement.py
+        python examples/governance_scenarios/content_filtering.py
+        python examples/governance_scenarios/customer_attribution.py
+
+  build:
+    name: Build Package
+    runs-on: ubuntu-latest
+    needs: [test, lint, type-check]
+    
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: ${{ env.PYTHON_VERSION }}
+        
+    - name: Install build dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install build twine
+        
+    - name: Build package
+      run: python -m build
+      
+    - name: Check package
+      run: twine check dist/*
+      
+    - name: Upload build artifacts
+      uses: actions/upload-artifact@v3
+      with:
+        name: dist
+        path: dist/
+
+  # Performance regression detection
+  performance:
+    name: Performance Check
+    runs-on: ubuntu-latest
+    if: github.event_name == 'pull_request'
+    
+    steps:
+    - uses: actions/checkout@v4
+      with:
+        fetch-depth: 0  # Full history for comparison
+    
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: ${{ env.PYTHON_VERSION }}
+        
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -e ".[dev]"
+        pip install pytest-benchmark
+        
+    - name: Run performance benchmarks
+      run: |
+        pytest benchmarks/ --benchmark-json=benchmark.json
+        
+    - name: Store benchmark result
+      uses: benchmark-action/github-action-benchmark@v1
+      with:
+        tool: 'pytest'
+        output-file-path: benchmark.json
+        comment-on-alert: true
+        fail-on-alert: false

@@ -1,0 +1,101 @@
+# Configuration for the labeler action
+# Automatically applies labels to PRs based on file patterns
+
+# Core components
+"core":
+  - changed-files:
+    - any-glob-to-any-file: ['src/genops/core/**/*']
+
+"providers":
+  - changed-files:
+    - any-glob-to-any-file: ['src/genops/providers/**/*']
+
+"cli":
+  - changed-files:
+    - any-glob-to-any-file: ['src/genops/cli/**/*']
+
+"exporters":
+  - changed-files:
+    - any-glob-to-any-file: ['src/genops/exporters/**/*']
+
+# Documentation
+"documentation":
+  - changed-files:
+    - any-glob-to-any-file: 
+      - '*.md'
+      - 'docs/**/*'
+      - '.github/**/*.md'
+
+# Testing
+"tests":
+  - changed-files:
+    - any-glob-to-any-file: ['tests/**/*']
+
+"examples":
+  - changed-files:
+    - any-glob-to-any-file: ['examples/**/*']
+
+# Infrastructure
+"ci":
+  - changed-files:
+    - any-glob-to-any-file: 
+      - '.github/workflows/**/*'
+      - '.github/actions/**/*'
+      - '.pre-commit-config.yaml'
+
+"dependencies":
+  - changed-files:
+    - any-glob-to-any-file: 
+      - 'pyproject.toml'
+      - 'requirements*.txt'
+      - 'Pipfile'
+      - 'poetry.lock'
+
+"docker":
+  - changed-files:
+    - any-glob-to-any-file: 
+      - 'Dockerfile*'
+      - 'docker-compose*.yml'
+      - '.devcontainer/**/*'
+
+# Governance specific
+"cost-attribution":
+  - changed-files:
+    - any-glob-to-any-file: ['**/*cost*', '**/*attribution*']
+
+"policy":
+  - changed-files:
+    - any-glob-to-any-file: ['**/*policy*', '**/*enforcement*']
+
+"telemetry":
+  - changed-files:
+    - any-glob-to-any-file: ['**/*telemetry*', '**/*tracking*']
+
+"compliance":
+  - changed-files:
+    - any-glob-to-any-file: ['**/*compliance*', '**/*audit*']
+
+# Size-based labels
+"size/XS":
+  - changed-files:
+    - count-to-any: 1..5
+
+"size/S":
+  - changed-files:
+    - count-to-any: 6..15
+
+"size/M":
+  - changed-files:
+    - count-to-any: 16..50
+
+"size/L":
+  - changed-files:
+    - count-to-any: 51..100
+
+"size/XL":
+  - changed-files:
+    - count-to-any: 101..500
+
+"size/XXL":
+  - changed-files:
+    - count-to-any: 501..
