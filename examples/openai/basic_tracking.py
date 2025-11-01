@@ -21,7 +21,6 @@ Prerequisites:
 import os
 import sys
 import time
-from typing import Dict, Any
 
 def basic_chat_completion():
     """Basic chat completion with GenOps governance tracking."""

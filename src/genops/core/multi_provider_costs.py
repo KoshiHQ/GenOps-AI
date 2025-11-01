@@ -9,10 +9,10 @@ from __future__ import annotations
 
 import logging
 import time
-from typing import Dict, List, Optional, Set, Any, Union
+from typing import Dict, List, Optional, Set, Any
 from dataclasses import dataclass, field
 from contextlib import contextmanager
-from datetime import datetime, timedelta
+from datetime import datetime
 
 logger = logging.getLogger(__name__)
 
@@ -361,7 +361,7 @@ class MultiProviderCostAggregator:
         if len(summary.unique_providers) > 1:
             providers_by_cost = sorted(summary.cost_by_provider.items(), key=lambda x: x[1])
             cheapest_provider = providers_by_cost[0][0]
-            most_expensive = providers_by_cost[-1][0]
+            providers_by_cost[-1][0]
             
             cost_diff = providers_by_cost[-1][1] - providers_by_cost[0][1]
             if cost_diff > summary.total_cost * 0.2:  # >20% difference

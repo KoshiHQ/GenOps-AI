@@ -343,7 +343,7 @@ def create_example_app():
     }
     
     # Initialize GenOps middleware
-    genops_middleware = GenOpsFlaskMiddleware(
+    GenOpsFlaskMiddleware(
         app,
         environment='development',
         debug=True,
@@ -425,4 +425,7 @@ if __name__ == '__main__':
     print("  curl -H 'X-User-ID: user_456' http://localhost:5000/ai-operation")
     print()
     
-    app.run(debug=True, port=5000)
+    # Security: Control debug mode via environment variable
+    # Never use debug=True in production - allows arbitrary code execution
+    debug_mode = os.getenv("FLASK_DEBUG", "false").lower() == "true"
+    app.run(debug=debug_mode, port=5000)

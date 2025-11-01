@@ -5,7 +5,7 @@ from __future__ import annotations
 import logging
 import re
 from enum import Enum
-from typing import Any, Dict, List, Optional, Set, Union, Callable
+from typing import Any, Dict, List, Optional, Set, Callable
 from dataclasses import dataclass
 
 logger = logging.getLogger(__name__)

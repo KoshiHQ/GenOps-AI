@@ -21,12 +21,11 @@ import gc
 import tracemalloc
 from typing import List, Dict, Any, Callable
 from concurrent.futures import ThreadPoolExecutor, as_completed
-from functools import wraps
 
 import genops
 from genops.core.telemetry import GenOpsTelemetry
 from genops.core.policy import register_policy, PolicyResult
-from genops import ValidationSeverity, ValidationRule
+from genops import ValidationSeverity
 
 
 class PerformanceBenchmark:
@@ -412,7 +411,7 @@ def run_stress_test():
             operation_id=operation_count
         )
         
-        effective_attrs = genops.get_effective_attributes()
+        genops.get_effective_attributes()
         genops.clear_context()
         
         operation_count += 1

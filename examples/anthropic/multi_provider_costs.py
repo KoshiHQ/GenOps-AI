@@ -23,7 +23,7 @@ Prerequisites:
 import os
 import sys
 import time
-from typing import Dict, List, Optional, Tuple
+from typing import Optional
 from dataclasses import dataclass
 
 @dataclass
@@ -78,7 +78,6 @@ def compare_providers_for_task():
         if anthropic_result and openai_result:
             cost_diff = abs(anthropic_result.cost - openai_result.cost)
             cheaper = "Anthropic" if anthropic_result.cost < openai_result.cost else "OpenAI"
-            more_expensive = "OpenAI" if cheaper == "Anthropic" else "Anthropic"
             
             percentage_diff = (cost_diff / max(anthropic_result.cost, openai_result.cost)) * 100
             

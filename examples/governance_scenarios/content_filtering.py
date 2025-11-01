@@ -20,7 +20,7 @@ Run this example to see content governance in action!
 
 import os
 import logging
-from typing import Dict, Any, List
+from typing import Dict, Any
 
 # GenOps imports
 from genops.core.policy import register_policy, PolicyResult, PolicyViolationError
@@ -225,7 +225,6 @@ def evaluate_content_policies(content: str, context: str) -> Dict[str, Any]:
     - Custom ML models for content classification
     - Third-party content filtering services
     """
-    from genops.core.policy import _policy_engine
     
     result = {
         "result": "ALLOWED",
@@ -313,7 +312,7 @@ def demonstrate_real_openai_with_filtering():
         print(f"✅ Content approved: {safe_content}")
         
         # Make API call  
-        response = client.chat_completions_create(
+        client.chat_completions_create(
             model="gpt-3.5-turbo",
             messages=[{"role": "user", "content": safe_content}],
             max_tokens=100,

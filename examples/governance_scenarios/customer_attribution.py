@@ -20,11 +20,8 @@ Run this example to see cost attribution in action!
 """
 
 import os
-import time
 import logging
 import random
-from typing import Dict, Any, List
-from datetime import datetime, timedelta
 
 # GenOps imports
 from genops.core.telemetry import GenOpsTelemetry
@@ -195,13 +192,22 @@ def demonstrate_multi_tenant_cost_tracking():
         customer_info = CUSTOMERS[customer_id]
         billing_cost = total_cost * customer_info["billing_rate"]
         profit = billing_cost - total_cost
-        margin = (profit / billing_cost) * 100 if billing_cost > 0 else 0
+        (profit / billing_cost) * 100 if billing_cost > 0 else 0
         
-        print(f"\n🏢 {customer_info['name']} ({customer_info['tier']})")
+        # Security: Sanitize sensitive financial data for logging
+        # Only log aggregate metrics, not specific financial details
+        sanitized_info = {
+            'customer_tier': customer_info['tier'],
+            'usage_percentage': round((total_cost/customer_info['monthly_budget']*100), 1)
+        }
+        
+        print(f"\n🏢 {customer_info['name']} ({sanitized_info['customer_tier']})")
         print(f"   AI Cost: ${total_cost:.4f}")
-        print(f"   Customer Bill: ${billing_cost:.4f} ({customer_info['billing_rate']}x markup)")
-        print(f"   Profit: ${profit:.4f} ({margin:.1f}% margin)")
-        print(f"   Budget Used: {(total_cost/customer_info['monthly_budget']*100):.1f}%")
+        print(f"   Budget Used: {sanitized_info['usage_percentage']}%")
+        
+        # Log sanitized data for audit (no sensitive financial details)
+        logger.info(f"Customer usage summary - Tier: {sanitized_info['customer_tier']}, "
+                   f"Usage: {sanitized_info['usage_percentage']}% of budget")
 
 def demonstrate_real_time_cost_tracking():
     """
@@ -242,7 +248,7 @@ def demonstrate_real_time_cost_tracking():
             print(f"   Model: {op['model']}")
             
             # Make real API call with full attribution
-            response = client.chat_completions_create(
+            client.chat_completions_create(
                 model=op["model"],
                 messages=[{"role": "user", "content": op["prompt"]}],
                 max_tokens=100,

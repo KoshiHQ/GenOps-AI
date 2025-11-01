@@ -20,7 +20,6 @@ Prerequisites:
 
 import os
 import sys
-from typing import List, Dict
 
 def setup_auto_instrumentation():
     """Set up GenOps auto-instrumentation for Anthropic."""

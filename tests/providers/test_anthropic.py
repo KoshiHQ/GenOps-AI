@@ -24,7 +24,7 @@ class TestGenOpsAnthropicAdapter:
         mock_anthropic_class = mock_anthropic_import
         mock_anthropic_class.return_value = MockAnthropicClient()
 
-        adapter = GenOpsAnthropicAdapter(api_key="test-key")
+        GenOpsAnthropicAdapter(api_key="test-key")
 
         # Verify Anthropic client was created with kwargs
         mock_anthropic_class.assert_called_once_with(api_key="test-key")
@@ -81,7 +81,7 @@ class TestGenOpsAnthropicAdapter:
         )
         mock_client.messages.create.return_value = mock_response
 
-        response = adapter.messages_create(
+        adapter.messages_create(
             model="claude-3-sonnet-20240229",
             max_tokens=1024,
             messages=[{"role": "user", "content": "Test message"}],
@@ -113,7 +113,7 @@ class TestGenOpsAnthropicAdapter:
         )
         mock_client.messages.create.return_value = mock_response
 
-        response = adapter.messages_create(
+        adapter.messages_create(
             model="claude-3-opus-20240229",
             max_tokens=2048,
             messages=[{"role": "user", "content": "Complex analysis task"}],
@@ -139,7 +139,7 @@ class TestGenOpsAnthropicAdapter:
         )
         mock_client.messages.create.return_value = mock_response
 
-        response = adapter.messages_create(
+        adapter.messages_create(
             model="claude-3-haiku-20240307",
             max_tokens=512,
             messages=[{"role": "user", "content": "Quick task"}],
@@ -173,7 +173,7 @@ class TestGenOpsAnthropicAdapter:
             mock_span = MagicMock()
             mock_trace.return_value.__enter__.return_value = mock_span
 
-            response = adapter.messages_create(
+            adapter.messages_create(
                 model="claude-3-sonnet-20240229",
                 max_tokens=1024,
                 messages=[{"role": "user", "content": "Test"}],
@@ -214,7 +214,7 @@ class TestGenOpsAnthropicAdapter:
         mock_client = MockAnthropicClient()
         adapter = GenOpsAnthropicAdapter(client=mock_client)
 
-        response = adapter.messages_create(
+        adapter.messages_create(
             model="claude-3-sonnet-20240229",
             max_tokens=1024,
             system="You are a helpful assistant that provides concise answers.",
@@ -236,7 +236,7 @@ class TestGenOpsAnthropicAdapter:
         mock_client = MockAnthropicClient()
         adapter = GenOpsAnthropicAdapter(client=mock_client)
 
-        response = adapter.messages_create(
+        adapter.messages_create(
             model="claude-3-sonnet-20240229",
             max_tokens=1024,
             messages=[{"role": "user", "content": "Test"}],
@@ -257,7 +257,7 @@ class TestGenOpsAnthropicAdapter:
         mock_client = MockAnthropicClient()
         adapter = GenOpsAnthropicAdapter(client=mock_client)
 
-        response = adapter.messages_create(
+        adapter.messages_create(
             model="claude-3-sonnet-20240229",
             max_tokens=1024,
             temperature=0.7,
@@ -287,7 +287,7 @@ class TestGenOpsAnthropicAdapter:
         )
         mock_client.messages.create.return_value = mock_response
 
-        response = adapter.messages_create(
+        adapter.messages_create(
             model="claude-unknown-model",
             max_tokens=1024,
             messages=[{"role": "user", "content": "Test"}],
@@ -349,7 +349,7 @@ class TestGenOpsAnthropicAdapter:
         )
         mock_client.messages.create.return_value = mock_response
 
-        response = adapter.messages_create(
+        adapter.messages_create(
             model="claude-instant-1.2",
             max_tokens=512,
             messages=[{"role": "user", "content": "Quick question"}],
@@ -378,7 +378,7 @@ class TestGenOpsAnthropicAdapter:
         )
         mock_client.messages.create.return_value = mock_response
 
-        response = adapter.messages_create(
+        adapter.messages_create(
             model="claude-3-sonnet-20240229", max_tokens=2048, messages=messages
         )
 

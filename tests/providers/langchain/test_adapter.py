@@ -1,9 +1,7 @@
 """Tests for LangChain adapter functionality."""
 
 import pytest
-from unittest.mock import Mock, patch, MagicMock
-import uuid
-import time
+from unittest.mock import Mock, patch
 
 from genops.providers.langchain.adapter import (
     GenOpsLangChainAdapter,

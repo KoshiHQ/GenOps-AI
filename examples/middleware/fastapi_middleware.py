@@ -18,10 +18,8 @@ Features:
 import uuid
 import time
 from typing import Optional, Dict, Any, Callable
-from contextlib import asynccontextmanager
 
 from fastapi import FastAPI, Request, Response, Depends, HTTPException, Header
-from fastapi.responses import JSONResponse
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 from pydantic import BaseModel
 import genops
@@ -335,7 +333,7 @@ def create_example_app():
     )
     
     # Initialize GenOps middleware
-    genops_middleware = GenOpsFastAPIMiddleware(
+    GenOpsFastAPIMiddleware(
         app,
         environment="development",
         team="backend-engineering",

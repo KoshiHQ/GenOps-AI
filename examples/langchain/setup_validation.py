@@ -4,7 +4,6 @@ Demonstrates: How to verify your GenOps LangChain setup is working correctly
 Use case: Troubleshooting and verifying installation before development
 """
 
-import os
 import sys
 
 # GenOps validation imports

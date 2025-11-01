@@ -15,7 +15,6 @@ Prerequisites:
 
 import os
 import sys
-from typing import Optional
 
 def main():
     """Run comprehensive Anthropic + GenOps setup validation."""
@@ -77,7 +76,8 @@ def manual_check():
         print("⚠️  ANTHROPIC_API_KEY doesn't look like a valid Anthropic key (should start with 'sk-ant-')")
         issues.append("Verify ANTHROPIC_API_KEY format")
     else:
-        print(f"✅ ANTHROPIC_API_KEY is set (first 10 chars: {api_key[:10]}...)")
+        # Security: Never log API key content, even partially  
+        print("✅ ANTHROPIC_API_KEY is set and properly formatted")
     
     # Check GenOps installation
     try:
@@ -97,7 +97,8 @@ def manual_check():
     
     # Check OpenTelemetry (optional)
     try:
-        from opentelemetry import trace
+        import opentelemetry
+        opentelemetry.__name__  # Reference to avoid unused import warning
         print("✅ OpenTelemetry is available")
         
         # Check if OTLP endpoint is configured

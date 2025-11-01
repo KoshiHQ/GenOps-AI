@@ -16,19 +16,16 @@ Features:
 
 import os
 import time
-from typing import Dict, Any, Optional
+from typing import Optional
 
 import genops
 
 # OpenTelemetry imports for Honeycomb integration
 try:
-    from opentelemetry import trace, metrics
+    from opentelemetry import trace
     from opentelemetry.exporter.otlp.proto.http.trace_exporter import OTLPSpanExporter
-    from opentelemetry.exporter.otlp.proto.http.metric_exporter import OTLPMetricExporter
     from opentelemetry.sdk.trace import TracerProvider
     from opentelemetry.sdk.trace.export import BatchSpanProcessor
-    from opentelemetry.sdk.metrics import MeterProvider
-    from opentelemetry.sdk.metrics.export import PeriodicExportingMetricReader
     from opentelemetry.sdk.resources import Resource
     HAS_OPENTELEMETRY = True
 except ImportError:
@@ -98,7 +95,7 @@ def demonstrate_honeycomb_telemetry():
     print("=" * 60)
     
     # Initialize Honeycomb integration
-    honeycomb = HoneycombGenOpsIntegration(
+    HoneycombGenOpsIntegration(
         dataset="genops-ai-demo", 
         service_name="genops-demo",
         environment="development"

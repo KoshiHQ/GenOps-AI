@@ -5,19 +5,17 @@ from __future__ import annotations
 import logging
 import time
 import uuid
-from typing import Any, Dict, List, Optional, Set
+from typing import Any, Dict, List, Optional
 
 from genops.providers.base import BaseFrameworkProvider
 from .cost_aggregator import get_cost_aggregator, create_chain_cost_context
-from .rag_monitor import LangChainRAGInstrumentor, get_rag_monitor
+from .rag_monitor import LangChainRAGInstrumentor
 
 logger = logging.getLogger(__name__)
 
 try:
     import langchain
-    from langchain.schema import BaseMessage
-    from langchain.chains.base import Chain
-    from langchain.agents.agent import AgentExecutor
+    # Import core LangChain classes for type checking
     from langchain.callbacks.base import BaseCallbackHandler
     
     HAS_LANGCHAIN = True
@@ -202,7 +200,7 @@ class GenOpsLangChainAdapter(BaseFrameworkProvider):
         elif operation_context.get("operation_type") == "llm":
             tokens_input = operation_context.get("tokens_input", 0)
             tokens_output = operation_context.get("tokens_output", 0)
-            model = operation_context.get("model", "gpt-3.5-turbo")
+            operation_context.get("model", "gpt-3.5-turbo")
             
             # Use simplified pricing - in production, this should be more sophisticated
             cost_per_1k_input = 0.001  # Default pricing

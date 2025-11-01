@@ -17,7 +17,6 @@ Run this example to see all tagging patterns in action!
 """
 
 import os
-from typing import Dict, Any
 
 # Import GenOps attribution and instrumentation
 import genops

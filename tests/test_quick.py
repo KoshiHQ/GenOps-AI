@@ -82,13 +82,13 @@ def test_provider_adapters():
         try:
             GenOpsOpenAIAdapter()
             print("⚠️ OpenAI adapter created (openai package must be installed)")
-        except ImportError as e:
+        except ImportError:
             print("✅ OpenAI adapter properly handles missing dependency")
         
         try:
             GenOpsAnthropicAdapter()
             print("⚠️ Anthropic adapter created (anthropic package must be installed)")
-        except ImportError as e:
+        except ImportError:
             print("✅ Anthropic adapter properly handles missing dependency")
         
         return True

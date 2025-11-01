@@ -23,7 +23,6 @@ Prerequisites:
 import os
 import sys
 import time
-from typing import Dict, List, Any, Generator
 
 def streaming_responses_example():
     """Demonstrate streaming responses with GenOps cost tracking."""

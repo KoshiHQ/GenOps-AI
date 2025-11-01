@@ -6,10 +6,8 @@ catching edge cases that manual unit tests might miss.
 """
 
 import pytest
-from decimal import Decimal
 from hypothesis import given, strategies as st, assume, settings
 from hypothesis.stateful import RuleBasedStateMachine, rule, invariant
-import uuid
 
 from genops.core.telemetry import GenOpsTelemetry
 from genops.core.context import set_default_attributes

@@ -1,7 +1,7 @@
 """Integration tests for LangChain provider."""
 
 import pytest
-from unittest.mock import Mock, patch, MagicMock
+from unittest.mock import Mock, patch
 import time
 import uuid
 
@@ -40,7 +40,7 @@ def mock_opentelemetry():
 def mock_langchain_components():
     """Mock LangChain components for testing."""
     # Mock Document
-    mock_document_class = Mock()
+    Mock()
     mock_doc1 = Mock()
     mock_doc1.page_content = "This is the first document about AI."
     mock_doc1.metadata = {"score": 0.85, "source": "doc1.txt"}
@@ -128,7 +128,7 @@ class TestLangChainIntegration:
     @patch('genops.providers.langchain.adapter.HAS_LANGCHAIN', True) 
     def test_cost_aggregation_workflow(self, mock_opentelemetry, mock_langchain_components):
         """Test multi-provider cost aggregation."""
-        adapter = instrument_langchain()
+        instrument_langchain()
         
         # Mock cost calculators on the aggregator
         from genops.providers.langchain.cost_aggregator import get_cost_aggregator
@@ -338,7 +338,7 @@ class TestLangChainIntegration:
     @patch('genops.providers.langchain.adapter.HAS_LANGCHAIN', True) 
     def test_nested_operations_cost_tracking(self, mock_opentelemetry, mock_langchain_components):
         """Test cost tracking for nested operations."""
-        adapter = instrument_langchain()
+        instrument_langchain()
         
         chain_id = str(uuid.uuid4())
         aggregator = get_cost_aggregator()
@@ -419,7 +419,6 @@ class TestLangChainRegistration:
     def test_auto_registration(self):
         """Test automatic registration of LangChain provider."""
         # Import should trigger auto-registration
-        from genops.providers import langchain
         from genops.auto_instrumentation import _instrumentor
         
         # Check if LangChain was registered (if available)

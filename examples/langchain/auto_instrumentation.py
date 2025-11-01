@@ -6,7 +6,6 @@ Use case: Minimal setup for existing LangChain applications
 
 import os
 import logging
-from typing import Dict, Any
 
 # Core LangChain imports
 try:

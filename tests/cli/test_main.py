@@ -131,7 +131,7 @@ class TestCLICommands:
 
         with patch("genops.cli.main.track_usage") as mock_track_usage:
             with patch("genops.cli.main.track") as mock_track:
-                with patch("genops.cli.main.register_policy") as mock_register:
+                with patch("genops.cli.main.register_policy"):
                     # Mock the decorated function
                     mock_function = MagicMock(return_value="Hello from GenOps AI!")
                     mock_track_usage.return_value = mock_function
@@ -424,7 +424,7 @@ class TestCLIIntegration:
 
         with patch("genops.cli.main.init") as mock_init:
             with patch("genops.cli.main.status") as mock_status:
-                with patch("genops.cli.main.register_policy") as mock_register:
+                with patch("genops.cli.main.register_policy"):
                     with patch("genops.cli.main.track_usage") as mock_track_usage:
                         with patch("genops.cli.main.track") as mock_track:
                             mock_init.return_value = mock_instrumentor

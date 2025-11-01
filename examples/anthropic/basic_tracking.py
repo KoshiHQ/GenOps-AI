@@ -21,7 +21,6 @@ Prerequisites:
 import os
 import sys
 import time
-from typing import Dict, Any
 
 def basic_message_creation():
     """Basic Claude message creation with GenOps governance tracking."""

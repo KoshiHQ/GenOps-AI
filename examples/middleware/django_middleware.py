@@ -21,7 +21,6 @@ import time
 from typing import Optional, Dict, Any, Callable
 
 from django.conf import settings
-from django.contrib.auth import get_user_model
 from django.core.exceptions import ObjectDoesNotExist
 from django.http import HttpRequest, HttpResponse
 from django.utils.deprecation import MiddlewareMixin
@@ -266,7 +265,7 @@ class GenOpsDjangoMiddleware(MiddlewareMixin):
             if auth_header.startswith('Token '):
                 token_key = auth_header.split(' ')[1]
                 try:
-                    token = Token.objects.select_related('user').get(key=token_key)
+                    Token.objects.select_related('user').get(key=token_key)
                     drf_info['auth_method'] = 'token'
                     drf_info['token_key'] = token_key[:8] + '...'  # Partial for security
                 except ObjectDoesNotExist:

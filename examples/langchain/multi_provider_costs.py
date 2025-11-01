@@ -6,15 +6,13 @@ Use case: Applications using multiple LLM providers for different tasks
 
 import os
 import logging
-from typing import Dict, List, Tuple
-from decimal import Decimal
+from typing import Dict
 
 # Core LangChain imports
 try:
     from langchain.chains import LLMChain
     from langchain.llms import OpenAI
     from langchain.prompts import PromptTemplate
-    from langchain.schema import BaseLanguageModel
 except ImportError:
     print("❌ LangChain not installed. Run: pip install langchain")
     exit(1)
@@ -38,10 +36,8 @@ except ImportError:
 try:
     from genops.providers.langchain import (
         instrument_langchain,
-        create_chain_cost_context,
-        get_cost_aggregator
+        create_chain_cost_context
     )
-    from genops.core.telemetry import GenOpsTelemetry
 except ImportError:
     print("❌ GenOps not installed. Run: pip install genops-ai[langchain]")
     exit(1)

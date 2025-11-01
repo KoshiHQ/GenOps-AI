@@ -6,14 +6,12 @@ Use case: Getting started with GenOps LangChain integration
 
 import os
 import logging
-from typing import Optional
 
 # Core LangChain imports
 try:
     from langchain.chains import LLMChain
     from langchain.llms import OpenAI
     from langchain.prompts import PromptTemplate
-    from langchain.schema import BaseLanguageModel
 except ImportError:
     print("❌ LangChain not installed. Run: pip install langchain")
     exit(1)
@@ -130,7 +128,7 @@ def verify_telemetry():
     
     # Check GenOps telemetry
     try:
-        telemetry = GenOpsTelemetry()
+        GenOpsTelemetry()
         print("✅ GenOps telemetry initialized")
         
         # Verify OTLP endpoint

@@ -1,43 +1,51 @@
 """Provider adapters for GenOps AI governance."""
 
+# Explicit imports to satisfy CodeQL security requirements
+# Import with try/except for optional dependencies
+try:
+    from genops.providers.openai import (
+        instrument_openai,
+        patch_openai, 
+        unpatch_openai,
+    )
+    _openai_available = True
+except ImportError:
+    # Create stub functions for unavailable providers
+    def instrument_openai(*args, **kwargs):
+        raise ImportError("OpenAI provider not available. Install with: pip install openai")
+    
+    def patch_openai(*args, **kwargs):
+        raise ImportError("OpenAI provider not available. Install with: pip install openai")
+    
+    def unpatch_openai(*args, **kwargs):
+        raise ImportError("OpenAI provider not available. Install with: pip install openai")
+    
+    _openai_available = False
 
-# Lazy imports to avoid optional dependency errors during package installation
-def __getattr__(name):
-    """Lazy import to avoid optional dependency errors."""
-    if name in ["instrument_openai", "patch_openai", "unpatch_openai"]:
-        from genops.providers.openai import (
-            instrument_openai,
-            patch_openai,
-            unpatch_openai,
-        )
+try:
+    from genops.providers.anthropic import (
+        instrument_anthropic,
+        patch_anthropic,
+        unpatch_anthropic,
+    )
+    _anthropic_available = True
+except ImportError:
+    # Create stub functions for unavailable providers  
+    def instrument_anthropic(*args, **kwargs):
+        raise ImportError("Anthropic provider not available. Install with: pip install anthropic")
+    
+    def patch_anthropic(*args, **kwargs):
+        raise ImportError("Anthropic provider not available. Install with: pip install anthropic")
+    
+    def unpatch_anthropic(*args, **kwargs):
+        raise ImportError("Anthropic provider not available. Install with: pip install anthropic")
+    
+    _anthropic_available = False
 
-        if name == "instrument_openai":
-            return instrument_openai
-        elif name == "patch_openai":
-            return patch_openai
-        elif name == "unpatch_openai":
-            return unpatch_openai
-
-    elif name in ["instrument_anthropic", "patch_anthropic", "unpatch_anthropic"]:
-        from genops.providers.anthropic import (
-            instrument_anthropic,
-            patch_anthropic,
-            unpatch_anthropic,
-        )
-
-        if name == "instrument_anthropic":
-            return instrument_anthropic
-        elif name == "patch_anthropic":
-            return patch_anthropic
-        elif name == "unpatch_anthropic":
-            return unpatch_anthropic
-
-    raise AttributeError(f"module {__name__!r} has no attribute {name!r}")
-
-
+# Explicit __all__ definition with all available exports
 __all__ = [
     "instrument_openai",
-    "patch_openai",
+    "patch_openai", 
     "unpatch_openai",
     "instrument_anthropic",
     "patch_anthropic",

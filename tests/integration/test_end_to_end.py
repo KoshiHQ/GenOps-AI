@@ -30,7 +30,7 @@ class TestEndToEndWorkflows:
                 "genops.auto_instrumentation.GenOpsInstrumentor._instrument_provider",
                 return_value=True,
             ):
-                instrumentor = genops.init(
+                genops.init(
                     service_name="e2e-test-service",
                     environment="testing",
                     default_team="integration-team",
@@ -206,13 +206,13 @@ class TestEndToEndWorkflows:
         anthropic_adapter = GenOpsAnthropicAdapter(client=anthropic_client)
 
         # Execute operations with both providers
-        openai_response = openai_adapter.chat_completions_create(
+        openai_adapter.chat_completions_create(
             model="gpt-4",
             messages=[{"role": "user", "content": "Generate creative content"}],
             feature="content_generation",
         )
 
-        anthropic_response = anthropic_adapter.messages_create(
+        anthropic_adapter.messages_create(
             model="claude-3-opus-20240229",
             max_tokens=2048,
             messages=[{"role": "user", "content": "Analyze complex reasoning"}],

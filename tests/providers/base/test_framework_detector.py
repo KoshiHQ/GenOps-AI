@@ -1,7 +1,7 @@
 """Tests for the framework detection system."""
 
 import pytest
-from unittest.mock import Mock, patch, MagicMock
+from unittest.mock import Mock, patch
 
 from genops.providers.base.detector import (
     FrameworkDetector,

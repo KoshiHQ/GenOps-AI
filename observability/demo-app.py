@@ -10,7 +10,6 @@ This demo application showcases GenOps AI with a complete observability stack:
 - Full integration with Grafana/Tempo/Loki/Mimir stack
 """
 
-import asyncio
 import json
 import logging
 import os
@@ -20,7 +19,6 @@ from typing import Dict, Any
 
 import uvicorn
 from fastapi import FastAPI, HTTPException, BackgroundTasks
-from fastapi.responses import JSONResponse
 from prometheus_client import Counter, Histogram, Gauge, start_http_server
 import redis
 

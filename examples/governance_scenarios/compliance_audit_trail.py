@@ -26,14 +26,13 @@ COMPLIANCE CAPABILITIES:
 import json
 import time
 import uuid
-from datetime import datetime, timedelta
+from datetime import datetime
 from typing import Dict, Any, List, Optional
 from enum import Enum
 
 import genops
 from genops.core.telemetry import GenOpsTelemetry
 from genops.core.policy import register_policy, PolicyResult
-from genops.providers.openai import instrument_openai
 
 
 class ComplianceFramework(Enum):
@@ -842,7 +841,7 @@ def main():
         auditors.append(hipaa_auditor)
         
         # Generate comprehensive report
-        comprehensive_report = generate_comprehensive_audit_report(auditors)
+        generate_comprehensive_audit_report(auditors)
         
         print(f"\n🎯 KEY TAKEAWAYS")
         print("=" * 60)

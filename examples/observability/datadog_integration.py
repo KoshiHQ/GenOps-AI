@@ -19,10 +19,8 @@ import os
 import time
 import json
 from typing import Dict, Any, Optional, List
-from datetime import datetime, timedelta
 
 import genops
-from genops.providers.openai import instrument_openai
 
 # OpenTelemetry imports for Datadog integration
 try:

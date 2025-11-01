@@ -151,7 +151,7 @@ def check_genops_imports() -> List[ValidationIssue]:
     for module, description in genops_modules.items():
         try:
             __import__(module)
-        except ImportError as e:
+        except ImportError:
             issues.append(ValidationIssue(
                 level="error",
                 component="genops",

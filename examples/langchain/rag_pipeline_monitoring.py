@@ -6,8 +6,7 @@ Use case: Knowledge base applications, document Q&A systems, and retrieval-augme
 
 import os
 import logging
-from typing import List, Dict, Any
-import tempfile
+from typing import List
 
 # Core LangChain imports
 try:
@@ -15,8 +14,7 @@ try:
     from langchain.llms import OpenAI
     from langchain.embeddings import OpenAIEmbeddings
     from langchain.vectorstores import Chroma
-    from langchain.text_splitter import CharacterTextSplitter, RecursiveCharacterTextSplitter
-    from langchain.document_loaders import TextLoader
+    from langchain.text_splitter import RecursiveCharacterTextSplitter
     from langchain.schema import Document
 except ImportError:
     print("❌ LangChain not installed. Run: pip install langchain chromadb")
@@ -130,7 +128,7 @@ def setup_vector_store_with_monitoring(documents: List[Document]) -> tuple:
     
     # Initialize GenOps adapter and RAG instrumentor
     adapter = instrument_langchain()
-    rag_instrumentor = LangChainRAGInstrumentor()
+    LangChainRAGInstrumentor()
     
     # Create embeddings with instrumentation
     print("   Creating embeddings model...")
@@ -458,7 +456,7 @@ def main():
         vectorstore, adapter = setup_vector_store_with_monitoring(documents)
         
         # Demonstrate basic RAG query
-        retrieved_docs = demonstrate_basic_rag_query(vectorstore, adapter)
+        demonstrate_basic_rag_query(vectorstore, adapter)
         
         # Demonstrate complete RAG pipeline
         pipeline_results = demonstrate_complete_rag_pipeline(vectorstore, adapter)

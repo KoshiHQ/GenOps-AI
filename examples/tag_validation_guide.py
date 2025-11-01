@@ -24,7 +24,6 @@ from genops import (
     TagValidationError,
     validate_tags,
     enforce_tags,
-    add_validation_rule,
     get_validator,
     create_required_rule,
     create_enum_rule,
@@ -50,13 +49,13 @@ def demonstrate_basic_validation():
         "user_id": "user_456"
     }
     
-    result = validate_tags(good_attributes)
-    print(f"✅ Valid: {result.valid}")
-    print(f"📊 Warnings: {len(result.warnings)}")
-    print(f"❌ Violations: {len(result.violations)}")
+    good_result = validate_tags(good_attributes)
+    print(f"✅ Valid: {good_result.valid}")
+    print(f"📊 Warnings: {len(good_result.warnings)}")
+    print(f"❌ Violations: {len(good_result.violations)}")
     
-    if result.warnings:
-        for warning in result.warnings:
+    if good_result.warnings:
+        for warning in good_result.warnings:
             print(f"   ⚠️ {warning['message']}")
     
     print("\n🔍 Testing with problematic attributes...")
@@ -68,15 +67,15 @@ def demonstrate_basic_validation():
         "user_id": ""                    # Empty string
     }
     
-    result = validate_tags(bad_attributes)
-    print(f"✅ Valid: {result.valid}")
-    print(f"📊 Warnings: {len(result.warnings)}")
-    print(f"❌ Violations: {len(result.violations)}")
+    bad_result = validate_tags(bad_attributes)
+    print(f"✅ Valid: {bad_result.valid}")
+    print(f"📊 Warnings: {len(bad_result.warnings)}")
+    print(f"❌ Violations: {len(bad_result.violations)}")
     
-    for warning in result.warnings:
+    for warning in bad_result.warnings:
         print(f"   ⚠️ WARNING: {warning['message']}")
     
-    for violation in result.violations:
+    for violation in bad_result.violations:
         print(f"   ❌ ERROR: {violation['message']}")
 
 
@@ -144,13 +143,13 @@ def demonstrate_custom_validation_rules():
         "budget_amount": "1500000"     # Too high
     }
     
-    result = validate_tags(test_attributes)
-    print(f"✅ Valid: {result.valid}")
+    test_result = validate_tags(test_attributes)
+    print(f"✅ Valid: {test_result.valid}")
     
-    for warning in result.warnings:
+    for warning in test_result.warnings:
         print(f"   ⚠️ WARNING: {warning['message']}")
     
-    for violation in result.violations:
+    for violation in test_result.violations:
         print(f"   ❌ ERROR: {violation['message']}")
 
 
@@ -196,14 +195,14 @@ def demonstrate_severity_levels():
     ))
     
     print("🔍 Testing WARNING level (team format)...")
-    result = validate_tags({"team": "Platform_Engineering"})
-    print(f"   Valid: {result.valid} (operation continues)")
-    print(f"   Warnings: {len(result.warnings)}")
+    warning_result = validate_tags({"team": "Platform_Engineering"})
+    print(f"   Valid: {warning_result.valid} (operation continues)")
+    print(f"   Warnings: {len(warning_result.warnings)}")
     
     print("\n🔍 Testing ERROR level (missing environment)...")
-    result = validate_tags({"team": "platform-eng"})
-    print(f"   Valid: {result.valid} (operation continues)")
-    print(f"   Violations: {len(result.violations)}")
+    error_result = validate_tags({"team": "platform-eng"})
+    print(f"   Valid: {error_result.valid} (operation continues)")
+    print(f"   Violations: {len(error_result.violations)}")
     
     print("\n🔍 Testing BLOCK level (missing customer_id)...")
     try:
@@ -340,7 +339,7 @@ def demonstrate_enterprise_compliance_rules():
     }
     
     try:
-        result = enforce_tags(compliant_attrs)
+        enforce_tags(compliant_attrs)
         print("   ✅ All compliance rules passed!")
         
     except TagValidationError as e:
@@ -356,7 +355,7 @@ def demonstrate_enterprise_compliance_rules():
     }
     
     try:
-        result = enforce_tags(non_compliant_attrs)
+        enforce_tags(non_compliant_attrs)
         print("   ⚠️ Unexpected success - should have blocked")
         
     except TagValidationError as e:
@@ -384,16 +383,16 @@ def demonstrate_configuration_management():
     
     # Test with bad data - should pass
     bad_data = {"team": "INVALID FORMAT", "environment": "invalid"}
-    result = validate_tags(bad_data)
-    print(f"   With validation disabled - Valid: {result.valid}")
-    print(f"   Warnings: {len(result.warnings)}, Violations: {len(result.violations)}")
+    disabled_result = validate_tags(bad_data)
+    print(f"   With validation disabled - Valid: {disabled_result.valid}")
+    print(f"   Warnings: {len(disabled_result.warnings)}, Violations: {len(disabled_result.violations)}")
     
     print("\n▶️ Re-enabling validation...")
     validator.enable()
     
-    result = validate_tags(bad_data)
-    print(f"   With validation enabled - Valid: {result.valid}")
-    print(f"   Warnings: {len(result.warnings)}, Violations: {len(result.violations)}")
+    enabled_result = validate_tags(bad_data)
+    print(f"   With validation enabled - Valid: {enabled_result.valid}")
+    print(f"   Warnings: {len(enabled_result.warnings)}, Violations: {len(enabled_result.violations)}")
     
     print("\n🧹 Cleaning up rules...")
     initial_count = len(validator.rules)

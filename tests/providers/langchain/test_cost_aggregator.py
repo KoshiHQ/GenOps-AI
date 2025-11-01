@@ -1,7 +1,7 @@
 """Tests for LangChain cost aggregation functionality."""
 
 import pytest
-from unittest.mock import Mock, patch
+from unittest.mock import patch
 import uuid
 
 from genops.providers.langchain.cost_aggregator import (

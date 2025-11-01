@@ -8,7 +8,6 @@ all possible input combinations and edge cases.
 import pytest
 from hypothesis import given, strategies as st, assume, settings
 from hypothesis.stateful import RuleBasedStateMachine, rule, invariant
-from enum import Enum
 from typing import Dict, Any, List
 
 from genops.core.policy import register_policy, _policy_engine, PolicyResult

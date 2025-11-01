@@ -19,9 +19,7 @@ Run this example to see budget enforcement in action!
 """
 
 import os
-import time
 import logging
-from typing import Dict, Any
 
 # GenOps imports
 from genops.core.policy import register_policy, PolicyResult, PolicyViolationError

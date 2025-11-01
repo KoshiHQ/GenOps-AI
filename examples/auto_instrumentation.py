@@ -1,6 +1,5 @@
 """Auto-instrumentation examples for GenOps AI."""
 
-import os
 import logging
 
 # Configure logging to see GenOps initialization messages
