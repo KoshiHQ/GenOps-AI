@@ -128,7 +128,7 @@ def setup_vector_store_with_monitoring(documents: List[Document]) -> tuple:
     
     # Initialize GenOps adapter and RAG instrumentor
     adapter = instrument_langchain()
-    LangChainRAGInstrumentor()
+    rag_instrumentor = LangChainRAGInstrumentor(adapter)
     
     # Create embeddings with instrumentation
     print("   Creating embeddings model...")
