@@ -16,7 +16,7 @@ try:
     HAS_OPENROUTER_DEPS = True
 except ImportError:
     HAS_OPENROUTER_DEPS = False
-    OpenAI = None
+    OpenAI = None  # type: ignore
     logger.warning(
         "OpenAI package not installed (required for OpenRouter). Install with: pip install openai"
     )
@@ -25,7 +25,7 @@ except ImportError:
 class GenOpsOpenRouterAdapter:
     """OpenRouter adapter with automatic governance telemetry and multi-provider routing awareness."""
 
-    def __init__(self, client: Any | None = None, **client_kwargs):
+    def __init__(self, client: Any | None = None, **client_kwargs: Any):
         if not HAS_OPENROUTER_DEPS:
             raise ImportError(
                 "OpenAI package not found (required for OpenRouter compatibility). Install with: pip install openai"
@@ -157,7 +157,7 @@ class GenOpsOpenRouterAdapter:
         else:
             return "openrouter"  # Default fallback
 
-    def chat_completions_create(self, **kwargs) -> Any:
+    def chat_completions_create(self, **kwargs: Any) -> Any:
         """Create chat completion with governance tracking and OpenRouter routing awareness."""
         # Extract attributes from kwargs
         governance_attrs, request_attrs, api_kwargs = self._extract_attributes(kwargs)
@@ -265,7 +265,7 @@ class GenOpsOpenRouterAdapter:
                 span.set_attribute("genops.error.type", type(e).__name__)
                 raise
 
-    def completions_create(self, **kwargs) -> Any:
+    def completions_create(self, **kwargs: Any) -> Any:
         """Create completion with governance tracking (legacy API support)."""
         # Extract attributes from kwargs
         governance_attrs, request_attrs, api_kwargs = self._extract_attributes(kwargs)
@@ -408,7 +408,7 @@ class GenOpsOpenRouterAdapter:
 
 
 def instrument_openrouter(
-    client: Any | None = None, **client_kwargs
+    client: Any | None = None, **client_kwargs: Any
 ) -> GenOpsOpenRouterAdapter:
     """
     Instrument an OpenRouter client with GenOps governance telemetry.
@@ -455,7 +455,7 @@ _original_openai_create = None
 _original_completions_create = None
 
 
-def patch_openrouter(auto_track: bool = True):
+def patch_openrouter(auto_track: bool = True) -> None:
     """
     Monkey patch OpenAI client to automatically add telemetry when used with OpenRouter.
 
@@ -505,7 +505,7 @@ def patch_openrouter(auto_track: bool = True):
             return
 
 
-def unpatch_openrouter():
+def unpatch_openrouter() -> None:
     """Remove OpenRouter monkey patches and restore original OpenAI behavior."""
     if not HAS_OPENROUTER_DEPS:
         return
@@ -523,7 +523,7 @@ def unpatch_openrouter():
 
 
 # Import validation utilities
-def validate_setup():
+def validate_setup() -> Any:
     """Validate OpenRouter provider setup."""
     try:
         from .openrouter_validation import validate_openrouter_setup
@@ -534,7 +534,7 @@ def validate_setup():
         return None
 
 
-def print_validation_result(result):
+def print_validation_result(result: Any) -> None:
     """Print validation result in user-friendly format."""
     try:
         from .openrouter_validation import print_openrouter_validation_result

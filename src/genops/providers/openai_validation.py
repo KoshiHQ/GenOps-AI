@@ -41,7 +41,7 @@ def check_environment_variables() -> list[ValidationIssue]:
             issues.append(ValidationIssue(
                 level="error",
                 component="environment",
-                message=f"Missing required environment variable: {var}",
+                message=f"Missing required environment variable: {var} ({description})",
                 fix_suggestion=f"Set {var} with: export {var}=your_key_here"
             ))
 

@@ -471,7 +471,7 @@ class TestOpenRouterValidation:
 
         # Mock the validation module
         with patch(
-            "genops.providers.openrouter.validate_openrouter_setup"
+            "genops.providers.openrouter_validation.validate_openrouter_setup"
         ) as mock_validate:
             mock_validate.return_value = Mock()
 
@@ -486,7 +486,7 @@ class TestOpenRouterValidation:
 
         # Mock ImportError for validation module
         with patch(
-            "genops.providers.openrouter.validate_openrouter_setup",
+            "genops.providers.openrouter_validation.validate_openrouter_setup",
             side_effect=ImportError,
         ):
             result = validate_setup()
@@ -501,7 +501,7 @@ class TestOpenRouterValidation:
 
         # Mock the validation module
         with patch(
-            "genops.providers.openrouter.print_openrouter_validation_result"
+            "genops.providers.openrouter_validation.print_openrouter_validation_result"
         ) as mock_print:
             print_validation_result(mock_result)
 
@@ -517,7 +517,7 @@ class TestOpenRouterValidation:
 
         # Mock ImportError for validation module
         with patch(
-            "genops.providers.openrouter.print_openrouter_validation_result",
+            "genops.providers.openrouter_validation.print_openrouter_validation_result",
             side_effect=ImportError,
         ):
             # Should not raise error
@@ -578,7 +578,7 @@ class TestOpenRouterIntegrationPatterns:
         assert attributes.get("genops.openrouter.routing_strategy") == "least-cost"
         assert attributes.get("genops.openrouter.preferred_provider") == "anthropic"
         assert attributes.get("genops.openrouter.actual_provider") == "anthropic"
-        assert attributes.get("openrouter.request_id") == "openrouter-req-123"
+        assert attributes.get("genops.openrouter.request_id") == "openrouter-req-123"
 
     def test_cost_calculation_with_actual_provider(
         self, mock_openai_import, mock_openrouter_response
@@ -1109,7 +1109,7 @@ class TestOpenRouterGovernanceIntegration:
         span = spans[0]
 
         # Should have cost-related attributes
-        cost_attrs = [attr for attr in span.attributes if "cost" in attr.key.lower()]
+        cost_attrs = [key for key in dict(span.attributes).keys() if "cost" in key.lower()]
         assert len(cost_attrs) > 0
 
 
@@ -1136,10 +1136,9 @@ class TestOpenRouterPerformanceAndScaling:
 
         # Verify each span has unique attributes
         request_ids = [
-            attr.value
+            dict(span.attributes).get("request_id")
             for span in spans
-            for attr in span.attributes
-            if attr.key == "request_id"
+            if "request_id" in dict(span.attributes)
         ]
         assert len(set(request_ids)) == 5  # All unique
 

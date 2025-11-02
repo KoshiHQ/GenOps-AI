@@ -48,6 +48,7 @@ class BaseFrameworkProvider(ABC):
         # Setup any framework-specific configuration
         self.setup_governance_attributes()
 
+    @abstractmethod
     def setup_governance_attributes(self) -> None:
         """Setup framework-specific governance attributes. Override in subclasses."""
         pass
@@ -220,6 +221,7 @@ class BaseFrameworkProvider(ABC):
         # Record framework-specific metrics
         self._record_framework_metrics(span, operation_type, context)
 
+    @abstractmethod
     def _record_framework_metrics(self, span: Any, operation_type: str, context: dict) -> None:
         """
         Record framework-specific metrics. Override in subclasses.

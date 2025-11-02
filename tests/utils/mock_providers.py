@@ -173,15 +173,17 @@ class MockOpenAIClient(MockProviderClient):
         self.chat.completions = MagicMock()
 
         # Set up chat completions create method with proper mock behavior
-        self.chat.completions.create = MagicMock()
-        self.chat.completions.create.side_effect = self._chat_completions_create
-        self.chat.completions.create.return_value = self._default_chat_response()
+        self.chat.completions.create = MagicMock(side_effect=self._chat_completions_create)
 
         # Add completions for legacy completions API
         self.completions = MagicMock()
-        self.completions.create = MagicMock()
-        self.completions.create.side_effect = self._completions_create
-        self.completions.create.return_value = self._default_chat_response()
+        self.completions.create = MagicMock(side_effect=self._completions_create)
+
+    def reset_mock(self):
+        """Reset all mock call counts and side effects."""
+        self.request_count = 0
+        self.chat.completions.create.reset_mock()
+        self.completions.create.reset_mock()
 
     def _default_chat_response(self) -> MockOpenAIResponse:
         """Create default response for when mock is accessed without parameters."""

@@ -12,7 +12,7 @@ _default_attributes: dict[str, Any] = {}
 _context_lock = threading.Lock()
 
 # Context variables for async support
-_context_attributes: ContextVar[dict[str, Any]] = ContextVar('genops_context', default={})
+_context_attributes: ContextVar[dict[str, Any]] = ContextVar('genops_context', default=None)
 
 
 def set_default_attributes(**attributes: Any) -> None:
@@ -112,7 +112,7 @@ def set_context(**attributes: Any) -> None:
             response = ai_chat(request.json['message'])
             return response
     """
-    current_context = _context_attributes.get({})
+    current_context = _context_attributes.get() or {}
     updated_context = current_context.copy()
     updated_context.update(attributes)
     _context_attributes.set(updated_context)
@@ -125,7 +125,7 @@ def get_context() -> dict[str, Any]:
     Returns:
         Dict containing all currently set context attributes
     """
-    return _context_attributes.get({})
+    return _context_attributes.get() or {}
 
 
 def clear_context() -> None:

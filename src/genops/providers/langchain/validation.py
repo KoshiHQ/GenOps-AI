@@ -41,7 +41,7 @@ def check_environment_variables() -> list[ValidationIssue]:
             issues.append(ValidationIssue(
                 level="error",
                 component="environment",
-                message=f"Missing required environment variable: {var}",
+                message=f"Missing required environment variable: {var} ({description})",
                 fix_suggestion=f"Set {var} with: export {var}=your_key_here"
             ))
 
@@ -111,7 +111,7 @@ def check_dependencies() -> list[ValidationIssue]:
             issues.append(ValidationIssue(
                 level="error",
                 component="dependencies",
-                message=f"LangChain module not available: {module}",
+                message=f"LangChain module not available: {module} ({description})",
                 fix_suggestion="Ensure LangChain is properly installed: pip install langchain"
             ))
 

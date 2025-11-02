@@ -1,12 +1,8 @@
 """GenOps AI - OpenTelemetry-native governance for AI."""
 
-__version__ = "0.1.0"
-
-# Core instrumentation functions
 # Auto-instrumentation system
 from genops.auto_instrumentation import (
     get_available_frameworks,
-    get_default_attributes,
     get_framework_status,
     init,
     register_framework_provider,
@@ -14,11 +10,7 @@ from genops.auto_instrumentation import (
     uninstrument,
 )
 
-
-# Auto-instrumentation convenience function
-def auto_instrument(**kwargs):
-    """Convenience function for auto-instrumentation. Alias for init()."""
-    return init(**kwargs)
+# Context management (avoiding duplicate import of get_default_attributes)
 from genops.core.context import (
     clear_context,
     clear_default_attributes,
@@ -62,6 +54,14 @@ from genops.core.validation import (
     remove_validation_rule,
     validate_tags,
 )
+
+__version__ = "0.1.0"
+
+
+# Auto-instrumentation convenience function
+def auto_instrument(**kwargs):
+    """Convenience function for auto-instrumentation. Alias for init()."""
+    return init(**kwargs)
 
 __all__ = [
     # Core functions
