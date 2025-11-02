@@ -527,7 +527,10 @@ def test_basic_functionality() -> list[ValidationIssue]:
                 # Check base URL configuration
                 if hasattr(adapter.client, "_base_url"):
                     base_url_parsed = urlparse(str(adapter.client._base_url))
-                    if base_url_parsed.hostname and base_url_parsed.hostname.endswith("openrouter.ai"):
+                    if base_url_parsed.hostname and (
+                        base_url_parsed.hostname == "openrouter.ai"
+                        or base_url_parsed.hostname.endswith(".openrouter.ai")
+                    ):
                         issues.append(
                             ValidationIssue(
                                 level="info",
@@ -819,7 +822,10 @@ def check_common_issues() -> list[ValidationIssue]:
 
         # Check for common endpoint URLs and provide specific guidance
         parsed_url = urlparse(otel_endpoint)
-        if parsed_url.hostname and parsed_url.hostname.endswith("honeycomb.io"):
+        if parsed_url.hostname and (
+            parsed_url.hostname == "honeycomb.io" 
+            or parsed_url.hostname.endswith(".honeycomb.io")
+        ):
             headers = os.getenv("OTEL_EXPORTER_OTLP_HEADERS")
             if not headers or "x-honeycomb-team" not in headers:
                 issues.append(
