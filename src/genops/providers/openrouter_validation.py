@@ -7,6 +7,7 @@ import logging
 import os
 from dataclasses import dataclass
 from typing import Any, NamedTuple, Optional
+from urllib.parse import urlparse
 
 logger = logging.getLogger(__name__)
 
@@ -181,8 +182,6 @@ def check_openrouter_connection() -> list[ValidationIssue]:
     issues = []
 
     try:
-        import os
-
         import requests
         from openai import OpenAI
 
@@ -281,12 +280,12 @@ def check_openrouter_connection() -> list[ValidationIssue]:
                     fix_suggestion="Check internet connection and firewall settings. Try: curl https://openrouter.ai/api/v1/models",
                 )
             )
-        except Exception as e:
+        except Exception:
             issues.append(
                 ValidationIssue(
                     level="warning",
                     component="connectivity",
-                    message=f"HTTP connectivity test failed: {str(e)}",
+                    message="HTTP connectivity test failed",
                     fix_suggestion="Check network configuration and try manual curl test",
                 )
             )
@@ -341,7 +340,7 @@ def check_openrouter_connection() -> list[ValidationIssue]:
                     )
                 )
 
-        except Exception as e:
+        except Exception:
             error_msg = str(e)
             if "401" in error_msg or "authentication" in error_msg.lower():
                 issues.append(
@@ -398,12 +397,12 @@ def check_openrouter_connection() -> list[ValidationIssue]:
                 fix_suggestion="Install OpenAI package: pip install openai. This is required for OpenRouter compatibility.",
             )
         )
-    except Exception as e:
+    except Exception:
         issues.append(
             ValidationIssue(
                 level="error",
                 component="connectivity",
-                message=f"Unexpected error during connection test: {str(e)}",
+                message="Unexpected error during connection test",
                 fix_suggestion="Please report this issue with full error details",
             )
         )
@@ -417,9 +416,9 @@ def check_genops_configuration() -> list[ValidationIssue]:
 
     # Check if auto-instrumentation is working
     try:
-        from genops.auto_instrumentation import GenOpsInstrumentor
+        import genops.auto_instrumentation
 
-        instrumentor = GenOpsInstrumentor()
+        instrumentor = genops.auto_instrumentation.GenOpsInstrumentor()
         if (
             hasattr(instrumentor, "provider_patches")
             and "openrouter" in instrumentor.provider_patches
@@ -450,12 +449,12 @@ def check_genops_configuration() -> list[ValidationIssue]:
                 fix_suggestion="Ensure GenOps is properly installed with auto-instrumentation support",
             )
         )
-    except Exception as e:
+    except Exception:
         issues.append(
             ValidationIssue(
                 level="warning",
                 component="configuration",
-                message=f"Error checking GenOps configuration: {str(e)}",
+                message="Error checking GenOps configuration",
             )
         )
 
@@ -472,12 +471,12 @@ def check_genops_configuration() -> list[ValidationIssue]:
             )
         )
 
-    except Exception as e:
+    except Exception:
         issues.append(
             ValidationIssue(
                 level="error",
                 component="configuration",
-                message=f"GenOps telemetry engine error: {str(e)}",
+                message="GenOps telemetry engine error",
                 fix_suggestion="Check GenOps installation and OpenTelemetry configuration",
             )
         )
@@ -490,9 +489,7 @@ def test_basic_functionality() -> list[ValidationIssue]:
     issues = []
 
     try:
-        import os
-
-        from genops.providers.openrouter import instrument_openrouter
+        import genops.providers.openrouter
 
         api_key = os.getenv("OPENROUTER_API_KEY") or os.getenv("OPENAI_API_KEY")
         if not api_key:
@@ -508,7 +505,7 @@ def test_basic_functionality() -> list[ValidationIssue]:
 
         # Test adapter creation
         try:
-            adapter = instrument_openrouter(openrouter_api_key=api_key)
+            adapter = genops.providers.openrouter.instrument_openrouter(openrouter_api_key=api_key)
             issues.append(
                 ValidationIssue(
                     level="info",
@@ -528,23 +525,32 @@ def test_basic_functionality() -> list[ValidationIssue]:
                 )
 
                 # Check base URL configuration
-                if hasattr(adapter.client, "_base_url") and "openrouter.ai" in str(
-                    adapter.client._base_url
-                ):
-                    issues.append(
-                        ValidationIssue(
-                            level="info",
-                            component="functionality",
-                            message="OpenRouter base URL correctly configured",
+                if hasattr(adapter.client, "_base_url"):
+                    base_url_parsed = urlparse(str(adapter.client._base_url))
+                    if base_url_parsed.hostname and base_url_parsed.hostname.endswith("openrouter.ai"):
+                        issues.append(
+                            ValidationIssue(
+                                level="info",
+                                component="functionality",
+                                message="OpenRouter base URL correctly configured",
+                            )
                         )
-                    )
+                    else:
+                        issues.append(
+                            ValidationIssue(
+                                level="warning",
+                                component="functionality",
+                                message="OpenRouter base URL may not be configured correctly",
+                                fix_suggestion="Ensure base_url is set to https://openrouter.ai/api/v1",
+                            )
+                        )
                 else:
                     issues.append(
                         ValidationIssue(
                             level="warning",
                             component="functionality",
-                            message="OpenRouter base URL may not be configured correctly",
-                            fix_suggestion="Ensure base_url is set to https://openrouter.ai/api/v1",
+                            message="OpenRouter client base URL not accessible",
+                            fix_suggestion="Check OpenAI package compatibility and API key format",
                         )
                     )
             else:
@@ -557,7 +563,7 @@ def test_basic_functionality() -> list[ValidationIssue]:
                     )
                 )
 
-        except Exception as e:
+        except Exception:
             error_msg = str(e)
             if "import" in error_msg.lower():
                 issues.append(
@@ -664,21 +670,21 @@ def test_basic_functionality() -> list[ValidationIssue]:
                     )
                 )
 
-        except ImportError as e:
+        except ImportError:
             issues.append(
                 ValidationIssue(
                     level="error",
                     component="functionality",
-                    message=f"Cannot import OpenRouter pricing engine: {str(e)}",
+                    message="Cannot import OpenRouter pricing engine",
                     fix_suggestion="Ensure OpenRouter provider module is properly installed: pip install genops-ai",
                 )
             )
-        except Exception as e:
+        except Exception:
             issues.append(
                 ValidationIssue(
                     level="warning",
                     component="functionality",
-                    message=f"OpenRouter pricing engine error: {str(e)}",
+                    message="OpenRouter pricing engine error",
                     fix_suggestion="Check OpenRouter pricing module installation and compatibility",
                 )
             )
@@ -718,40 +724,40 @@ def test_basic_functionality() -> list[ValidationIssue]:
                     )
                 )
 
-        except ImportError as e:
+        except ImportError:
             issues.append(
                 ValidationIssue(
                     level="warning",
                     component="functionality",
-                    message=f"GenOps telemetry integration not available: {str(e)}",
+                    message="GenOps telemetry integration not available",
                     fix_suggestion="Install complete GenOps package: pip install genops-ai",
                 )
             )
-        except Exception as e:
+        except Exception:
             issues.append(
                 ValidationIssue(
                     level="warning",
                     component="functionality",
-                    message=f"Telemetry integration test failed: {str(e)}",
+                    message="Telemetry integration test failed",
                     fix_suggestion="Check GenOps installation and OpenTelemetry configuration",
                 )
             )
 
-    except ImportError as e:
+    except ImportError:
         issues.append(
             ValidationIssue(
                 level="error",
                 component="functionality",
-                message=f"Cannot import OpenRouter provider: {str(e)}",
+                message="Cannot import OpenRouter provider",
                 fix_suggestion="Ensure OpenRouter provider module is properly installed: pip install genops-ai openai",
             )
         )
-    except Exception as e:
+    except Exception:
         issues.append(
             ValidationIssue(
                 level="error",
                 component="functionality",
-                message=f"Basic functionality test error: {str(e)}",
+                message="Basic functionality test error",
                 fix_suggestion="Check installation and configuration. Try reinstalling: pip install --upgrade genops-ai",
             )
         )
@@ -762,8 +768,6 @@ def test_basic_functionality() -> list[ValidationIssue]:
 def check_common_issues() -> list[ValidationIssue]:
     """Check for common configuration issues and provide specific fixes."""
     issues = []
-
-    import os
 
     # Check for common environment variable issues
     api_key = os.getenv("OPENROUTER_API_KEY") or os.getenv("OPENAI_API_KEY")
@@ -814,7 +818,8 @@ def check_common_issues() -> list[ValidationIssue]:
             )
 
         # Check for common endpoint URLs and provide specific guidance
-        if "honeycomb.io" in otel_endpoint:
+        parsed_url = urlparse(otel_endpoint)
+        if parsed_url.hostname and parsed_url.hostname.endswith("honeycomb.io"):
             headers = os.getenv("OTEL_EXPORTER_OTLP_HEADERS")
             if not headers or "x-honeycomb-team" not in headers:
                 issues.append(

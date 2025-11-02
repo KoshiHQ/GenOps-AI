@@ -101,7 +101,7 @@ def health_check():
         logger.error("Health check failed", error=str(e))
         return jsonify({
             "status": "unhealthy",
-            "error": str(e)
+            "error": "An internal error occurred"
         }), 500
 
 
@@ -121,7 +121,7 @@ def readiness_check():
         logger.error("Readiness check failed", error=str(e))
         return jsonify({
             "status": "not_ready",
-            "error": str(e)
+            "error": "Service not ready"
         }), 503
 
 
@@ -220,7 +220,7 @@ def chat_completions():
         )
         return jsonify({
             "error": {
-                "message": str(e),
+                "message": "An internal error occurred",
                 "type": "internal_error",
                 "code": "openrouter_error"
             }
@@ -250,7 +250,7 @@ def list_models():
 
     except Exception as e:
         logger.error("Failed to list models", error=str(e))
-        return jsonify({"error": str(e)}), 500
+        return jsonify({"error": "Unable to retrieve models"}), 500
 
 
 @app.route("/cost/estimate", methods=["POST"])
@@ -283,7 +283,7 @@ def estimate_cost():
 
     except Exception as e:
         logger.error("Cost estimation failed", error=str(e))
-        return jsonify({"error": str(e)}), 500
+        return jsonify({"error": "Cost estimation unavailable"}), 500
 
 
 @app.errorhandler(Exception)
