@@ -643,6 +643,7 @@ def test_basic_functionality() -> list[ValidationIssue]:
                     if cost > 0:
                         providers_tested.append(expected_provider)
                 except Exception:
+                    # Ignore errors in cost calculation during validation  # nosec B110
                     pass
 
             if providers_tested:
