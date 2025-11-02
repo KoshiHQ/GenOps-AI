@@ -3,7 +3,7 @@
 from __future__ import annotations
 
 import logging
-from typing import Any, Dict, Optional, Tuple, Set
+from typing import Any
 
 from genops.core.telemetry import GenOpsTelemetry
 
@@ -12,18 +12,20 @@ logger = logging.getLogger(__name__)
 try:
     import openai
     from openai import OpenAI
-    
+
     HAS_OPENROUTER_DEPS = True
 except ImportError:
     HAS_OPENROUTER_DEPS = False
     OpenAI = None
-    logger.warning("OpenAI package not installed (required for OpenRouter). Install with: pip install openai")
+    logger.warning(
+        "OpenAI package not installed (required for OpenRouter). Install with: pip install openai"
+    )
 
 
 class GenOpsOpenRouterAdapter:
     """OpenRouter adapter with automatic governance telemetry and multi-provider routing awareness."""
 
-    def __init__(self, client: Optional[Any] = None, **client_kwargs):
+    def __init__(self, client: Any | None = None, **client_kwargs):
         if not HAS_OPENROUTER_DEPS:
             raise ImportError(
                 "OpenAI package not found (required for OpenRouter compatibility). Install with: pip install openai"
@@ -31,35 +33,55 @@ class GenOpsOpenRouterAdapter:
 
         # OpenRouter uses OpenAI-compatible API with custom base URL
         default_kwargs = {
-            'base_url': 'https://openrouter.ai/api/v1',
-            'api_key': client_kwargs.get('api_key') or client_kwargs.get('openrouter_api_key')
+            "base_url": "https://openrouter.ai/api/v1",
+            "api_key": client_kwargs.get("api_key")
+            or client_kwargs.get("openrouter_api_key"),
         }
-        
+
         # Override defaults with any provided kwargs
         final_kwargs = {**default_kwargs, **client_kwargs}
-        if 'openrouter_api_key' in final_kwargs:
-            final_kwargs.pop('openrouter_api_key')  # Clean up custom key name
-            
+        if "openrouter_api_key" in final_kwargs:
+            final_kwargs.pop("openrouter_api_key")  # Clean up custom key name
+
         self.client = client or OpenAI(**final_kwargs)
         self.telemetry = GenOpsTelemetry()
 
         # Define governance and request attributes
         self.GOVERNANCE_ATTRIBUTES = {
-            'team', 'project', 'feature', 'customer_id', 'customer',
-            'environment', 'cost_center', 'user_id'
+            "team",
+            "project",
+            "feature",
+            "customer_id",
+            "customer",
+            "environment",
+            "cost_center",
+            "user_id",
         }
         self.REQUEST_ATTRIBUTES = {
-            'temperature', 'max_tokens', 'top_p', 'frequency_penalty',
-            'presence_penalty', 'stop', 'seed', 'stream',
-            'provider', 'route', 'models', 'fallbacks'  # OpenRouter-specific
-        }
-        
-        # OpenRouter-specific routing attributes
-        self.OPENROUTER_ATTRIBUTES = {
-            'provider', 'route', 'models', 'fallbacks', 'transforms'
+            "temperature",
+            "max_tokens",
+            "top_p",
+            "frequency_penalty",
+            "presence_penalty",
+            "stop",
+            "seed",
+            "stream",
+            "provider",
+            "route",
+            "models",
+            "fallbacks",  # OpenRouter-specific
         }
 
-    def _extract_attributes(self, kwargs: Dict) -> Tuple[Dict, Dict, Dict]:
+        # OpenRouter-specific routing attributes
+        self.OPENROUTER_ATTRIBUTES = {
+            "provider",
+            "route",
+            "models",
+            "fallbacks",
+            "transforms",
+        }
+
+    def _extract_attributes(self, kwargs: dict) -> tuple[dict, dict, dict]:
         """Extract governance, request, and routing attributes from kwargs."""
         governance_attrs = {}
         request_attrs = {}
@@ -78,41 +100,43 @@ class GenOpsOpenRouterAdapter:
 
         return governance_attrs, request_attrs, api_kwargs
 
-    def _extract_routing_info(self, response: Any) -> Dict[str, Any]:
+    def _extract_routing_info(self, response: Any) -> dict[str, Any]:
         """Extract OpenRouter-specific routing information from response."""
         routing_info = {}
-        
+
         # Check for OpenRouter response headers or metadata
-        if hasattr(response, 'response') and hasattr(response.response, 'headers'):
+        if hasattr(response, "response") and hasattr(response.response, "headers"):
             headers = response.response.headers
             # OpenRouter typically includes routing info in headers
-            routing_info['selected_provider'] = headers.get('x-openrouter-provider')
-            routing_info['fallback_used'] = headers.get('x-openrouter-fallback') == 'true'
-            routing_info['request_id'] = headers.get('x-request-id')
-            
+            routing_info["selected_provider"] = headers.get("x-openrouter-provider")
+            routing_info["fallback_used"] = (
+                headers.get("x-openrouter-fallback") == "true"
+            )
+            routing_info["request_id"] = headers.get("x-request-id")
+
         # Alternative: check for routing info in response object
-        elif hasattr(response, 'provider'):
-            routing_info['selected_provider'] = response.provider
-            
+        elif hasattr(response, "provider"):
+            routing_info["selected_provider"] = response.provider
+
         return routing_info
 
     def _get_provider_from_model(self, model: str) -> str:
         """Extract likely provider from OpenRouter model name."""
         # OpenRouter model names often include provider info
-        if 'openai' in model.lower() or 'gpt' in model.lower():
-            return 'openai'
-        elif 'anthropic' in model.lower() or 'claude' in model.lower():
-            return 'anthropic'
-        elif 'google' in model.lower() or 'gemini' in model.lower():
-            return 'google'
-        elif 'meta' in model.lower() or 'llama' in model.lower():
-            return 'meta'
-        elif 'mistral' in model.lower():
-            return 'mistral'
-        elif 'cohere' in model.lower():
-            return 'cohere'
+        if "openai" in model.lower() or "gpt" in model.lower():
+            return "openai"
+        elif "anthropic" in model.lower() or "claude" in model.lower():
+            return "anthropic"
+        elif "google" in model.lower() or "gemini" in model.lower():
+            return "google"
+        elif "meta" in model.lower() or "llama" in model.lower():
+            return "meta"
+        elif "mistral" in model.lower():
+            return "mistral"
+        elif "cohere" in model.lower():
+            return "cohere"
         else:
-            return 'openrouter'  # Default fallback
+            return "openrouter"  # Default fallback
 
     def chat_completions_create(self, **kwargs) -> Any:
         """Create chat completion with governance tracking and OpenRouter routing awareness."""
@@ -121,10 +145,12 @@ class GenOpsOpenRouterAdapter:
 
         model = api_kwargs.get("model", "unknown")
         messages = api_kwargs.get("messages", [])
-        
+
         # Extract OpenRouter-specific routing preferences
-        preferred_provider = request_attrs.get('provider')
-        routing_strategy = request_attrs.get('route', 'fallback')  # 'fallback', 'least-cost', 'fastest'
+        preferred_provider = request_attrs.get("provider")
+        routing_strategy = request_attrs.get(
+            "route", "fallback"
+        )  # 'fallback', 'least-cost', 'fastest'
 
         # Estimate input tokens (rough approximation)
         input_text = " ".join(
@@ -143,11 +169,11 @@ class GenOpsOpenRouterAdapter:
             "tokens_estimated_input": int(estimated_input_tokens),
             "openrouter.routing_strategy": routing_strategy,
         }
-        
+
         # Add OpenRouter-specific attributes
         if preferred_provider:
             trace_attrs["openrouter.preferred_provider"] = preferred_provider
-            
+
         # Predict likely backend provider for cost estimation
         predicted_provider = self._get_provider_from_model(model)
         trace_attrs["openrouter.predicted_provider"] = predicted_provider
@@ -155,6 +181,7 @@ class GenOpsOpenRouterAdapter:
         # Add effective attributes (defaults + context + governance)
         try:
             from genops.core.context import get_effective_attributes
+
             effective_attrs = get_effective_attributes(**governance_attrs)
             trace_attrs.update(effective_attrs)
         except (ImportError, Exception):
@@ -172,14 +199,18 @@ class GenOpsOpenRouterAdapter:
 
                 # Extract routing information from response
                 routing_info = self._extract_routing_info(response)
-                actual_provider = routing_info.get('selected_provider', predicted_provider)
-                
+                actual_provider = routing_info.get(
+                    "selected_provider", predicted_provider
+                )
+
                 # Record routing telemetry
                 span.set_attribute("genops.openrouter.actual_provider", actual_provider)
-                if routing_info.get('fallback_used'):
+                if routing_info.get("fallback_used"):
                     span.set_attribute("genops.openrouter.fallback_used", True)
-                if routing_info.get('request_id'):
-                    span.set_attribute("genops.openrouter.request_id", routing_info['request_id'])
+                if routing_info.get("request_id"):
+                    span.set_attribute(
+                        "genops.openrouter.request_id", routing_info["request_id"]
+                    )
 
                 # Extract usage and cost information
                 if hasattr(response, "usage") and response.usage:
@@ -189,7 +220,9 @@ class GenOpsOpenRouterAdapter:
                     total_tokens = usage.total_tokens
 
                     # Calculate cost using OpenRouter pricing and actual provider
-                    cost = self._calculate_cost(model, actual_provider, input_tokens, output_tokens)
+                    cost = self._calculate_cost(
+                        model, actual_provider, input_tokens, output_tokens
+                    )
 
                     # Record telemetry with both OpenRouter and underlying provider info
                     self.telemetry.record_cost(
@@ -220,10 +253,10 @@ class GenOpsOpenRouterAdapter:
 
         model = api_kwargs.get("model", "unknown")
         prompt = api_kwargs.get("prompt", "")
-        
+
         # Extract OpenRouter-specific routing preferences
-        preferred_provider = request_attrs.get('provider')
-        routing_strategy = request_attrs.get('route', 'fallback')
+        preferred_provider = request_attrs.get("provider")
+        routing_strategy = request_attrs.get("route", "fallback")
 
         # Estimate input tokens
         estimated_input_tokens = len(str(prompt).split()) * 1.3
@@ -239,11 +272,11 @@ class GenOpsOpenRouterAdapter:
             "tokens_estimated_input": int(estimated_input_tokens),
             "openrouter.routing_strategy": routing_strategy,
         }
-        
+
         # Add OpenRouter-specific attributes
         if preferred_provider:
             trace_attrs["openrouter.preferred_provider"] = preferred_provider
-            
+
         # Predict likely backend provider
         predicted_provider = self._get_provider_from_model(model)
         trace_attrs["openrouter.predicted_provider"] = predicted_provider
@@ -251,6 +284,7 @@ class GenOpsOpenRouterAdapter:
         # Add effective attributes (defaults + context + governance)
         try:
             from genops.core.context import get_effective_attributes
+
             effective_attrs = get_effective_attributes(**governance_attrs)
             trace_attrs.update(effective_attrs)
         except (ImportError, Exception):
@@ -268,11 +302,13 @@ class GenOpsOpenRouterAdapter:
 
                 # Extract routing information
                 routing_info = self._extract_routing_info(response)
-                actual_provider = routing_info.get('selected_provider', predicted_provider)
-                
+                actual_provider = routing_info.get(
+                    "selected_provider", predicted_provider
+                )
+
                 # Record routing telemetry
                 span.set_attribute("genops.openrouter.actual_provider", actual_provider)
-                if routing_info.get('fallback_used'):
+                if routing_info.get("fallback_used"):
                     span.set_attribute("genops.openrouter.fallback_used", True)
 
                 # Extract usage and cost information
@@ -283,7 +319,9 @@ class GenOpsOpenRouterAdapter:
                     total_tokens = usage.total_tokens
 
                     # Calculate cost
-                    cost = self._calculate_cost(model, actual_provider, input_tokens, output_tokens)
+                    cost = self._calculate_cost(
+                        model, actual_provider, input_tokens, output_tokens
+                    )
 
                     # Record telemetry
                     self.telemetry.record_cost(
@@ -313,11 +351,18 @@ class GenOpsOpenRouterAdapter:
         # Import the pricing engine
         try:
             from .openrouter_pricing import calculate_openrouter_cost
-            return calculate_openrouter_cost(model, actual_provider, input_tokens, output_tokens)
+
+            return calculate_openrouter_cost(
+                model, actual_provider, input_tokens, output_tokens
+            )
         except ImportError:
             # Fallback to simplified pricing estimation
-            logger.warning("OpenRouter pricing engine not available, using simplified estimation")
-            return self._fallback_cost_calculation(model, actual_provider, input_tokens, output_tokens)
+            logger.warning(
+                "OpenRouter pricing engine not available, using simplified estimation"
+            )
+            return self._fallback_cost_calculation(
+                model, actual_provider, input_tokens, output_tokens
+            )
 
     def _fallback_cost_calculation(
         self, model: str, actual_provider: str, input_tokens: int, output_tokens: int
@@ -325,18 +370,18 @@ class GenOpsOpenRouterAdapter:
         """Fallback cost calculation when pricing engine is not available."""
         # Simplified pricing based on common patterns
         base_pricing = {
-            'openai': {"input": 0.01 / 1000, "output": 0.02 / 1000},
-            'anthropic': {"input": 3.00 / 1000000, "output": 15.00 / 1000000},
-            'google': {"input": 0.0005 / 1000, "output": 0.0015 / 1000},
-            'meta': {"input": 0.0002 / 1000, "output": 0.0002 / 1000},
-            'mistral': {"input": 0.0007 / 1000, "output": 0.0007 / 1000},
+            "openai": {"input": 0.01 / 1000, "output": 0.02 / 1000},
+            "anthropic": {"input": 3.00 / 1000000, "output": 15.00 / 1000000},
+            "google": {"input": 0.0005 / 1000, "output": 0.0015 / 1000},
+            "meta": {"input": 0.0002 / 1000, "output": 0.0002 / 1000},
+            "mistral": {"input": 0.0007 / 1000, "output": 0.0007 / 1000},
         }
 
         # Default to medium-cost provider pricing
         default_pricing = {"input": 0.005 / 1000, "output": 0.01 / 1000}
-        
+
         provider_pricing = base_pricing.get(actual_provider, default_pricing)
-        
+
         input_cost = input_tokens * provider_pricing["input"]
         output_cost = output_tokens * provider_pricing["output"]
 
@@ -344,7 +389,7 @@ class GenOpsOpenRouterAdapter:
 
 
 def instrument_openrouter(
-    client: Optional[Any] = None, **client_kwargs
+    client: Any | None = None, **client_kwargs
 ) -> GenOpsOpenRouterAdapter:
     """
     Instrument an OpenRouter client with GenOps governance telemetry.
@@ -415,7 +460,7 @@ def patch_openrouter(auto_track: bool = True):
 
             def patched_chat_create(self, **kwargs):
                 # Only apply GenOps instrumentation for OpenRouter clients
-                if hasattr(self, 'base_url') and 'openrouter.ai' in str(self.base_url):
+                if hasattr(self, "base_url") and "openrouter.ai" in str(self.base_url):
                     adapter = GenOpsOpenRouterAdapter(client=self)
                     return adapter.chat_completions_create(**kwargs)
                 else:
@@ -424,7 +469,7 @@ def patch_openrouter(auto_track: bool = True):
 
             def patched_completions_create(self, **kwargs):
                 # Only apply GenOps instrumentation for OpenRouter clients
-                if hasattr(self, 'base_url') and 'openrouter.ai' in str(self.base_url):
+                if hasattr(self, "base_url") and "openrouter.ai" in str(self.base_url):
                     adapter = GenOpsOpenRouterAdapter(client=self)
                     return adapter.completions_create(**kwargs)
                 else:
@@ -463,6 +508,7 @@ def validate_setup():
     """Validate OpenRouter provider setup."""
     try:
         from .openrouter_validation import validate_openrouter_setup
+
         return validate_openrouter_setup()
     except ImportError:
         logger.warning("OpenRouter validation utilities not available")
@@ -473,6 +519,7 @@ def print_validation_result(result):
     """Print validation result in user-friendly format."""
     try:
         from .openrouter_validation import print_openrouter_validation_result
+
         print_openrouter_validation_result(result)
     except ImportError:
         logger.warning("OpenRouter validation utilities not available")
