@@ -252,7 +252,7 @@ def advanced_features_demo():
             print(f"      Governance attrs: {len(scenario['governance'])} attributes")
 
             try:
-                response = client.chat_completions_create(
+                client.chat_completions_create(
                     model=scenario["model"],
                     messages=[{"role": "user", "content": "Hello, how are you?"}],
                     max_tokens=30,
