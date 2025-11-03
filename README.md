@@ -138,28 +138,24 @@ GenOps integrates natively with your AI and infrastructure layer to collect and 
 
 GenOps exports standardized telemetry and governance events to your existing stack.
 
-### Observability & Monitoring
-
-GenOps exports standardized telemetry and governance events to your existing stack.
-
-### Observability & Monitoring
+#### Observability & Monitoring
 
 ✅ [OpenTelemetry Collector](https://opentelemetry.io/docs/collector/)  
 ✅ [Datadog](https://www.datadoghq.com/)  
 ✅ [Grafana](https://grafana.com/) / [Loki](https://grafana.com/oss/loki/)  
 ✅ [Honeycomb](https://www.honeycomb.io/)  
-✅ [Prometheus](https://prometheus.io/) / [SigNoz](https://signoz.io/)  
-✅ [New Relic](https://newrelic.com/)  
-✅ [Jaeger](https://www.jaegertracing.io/)  
-✅ [Tempo](https://grafana.com/oss/tempo/)  
+✅ [Prometheus](https://prometheus.io/) / [Tempo](https://grafana.com/oss/tempo/)  
+☐ [New Relic](https://newrelic.com/)  
+☐ [Jaeger](https://www.jaegertracing.io/)  
+☐ [SigNoz](https://signoz.io/)  
 
-### Cost & FinOps Platforms
+#### Cost & FinOps Platforms
 
-✅ [OpenCost](https://www.opencost.io/)  
+☐ [OpenCost](https://www.opencost.io/)  
 ☐ [Finout](https://www.finout.io/) / [CloudZero](https://www.cloudzero.com/)  
 ☐ [AWS Cost Explorer](https://aws.amazon.com/aws-cost-management/) / [GCP Billing](https://cloud.google.com/billing/docs) / [Azure Cost Management](https://azure.microsoft.com/en-us/products/cost-management/)  
 ☐ [Cloudflare Workers AI Analytics](https://developers.cloudflare.com/workers-ai/)  
-✅ [Traceloop](https://traceloop.com/) / [OpenLLMetry](https://github.com/traceloop/openllmetry)  
+☐ [Traceloop](https://traceloop.com/) / [OpenLLMetry](https://github.com/traceloop/openllmetry)  
 
 ### Policy & Compliance
 
