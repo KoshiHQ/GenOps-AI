@@ -178,17 +178,21 @@ GenOps exports standardized telemetry and governance events to your existing sta
 
 ### Policy & Compliance
 
-☐ [OPA (Open Policy Agent)](https://www.openpolicyagent.org/)  
-☐ [Kyverno](https://kyverno.io/)  
-☐ [Cloud Custodian](https://cloudcustodian.io/)  
-☐ [HashiCorp Sentinel](https://www.hashicorp.com/sentinel)  
+☐ OPA (Open Policy Agent) ([↗](https://www.openpolicyagent.org/))
+☐ Kyverno ([↗](https://kyverno.io/))
+☐ Cloud Custodian ([↗](https://cloudcustodian.io/))
+☐ HashiCorp Sentinel ([↗](https://www.hashicorp.com/sentinel))
 ☐ Rego-compatible policies  
 
 ### Data & Security Pipelines
 
-☐ [BigQuery](https://cloud.google.com/bigquery) / [Snowflake](https://www.snowflake.com/)  
-☐ [S3](https://aws.amazon.com/s3/) / [GCS](https://cloud.google.com/storage) / [Azure Blob](https://azure.microsoft.com/en-us/products/storage/blobs/)  
-☐ [Splunk](https://www.splunk.com/) / [Elastic](https://www.elastic.co/)
+☐ BigQuery ([↗](https://cloud.google.com/bigquery))
+☐ Snowflake ([↗](https://www.snowflake.com/))
+☐ S3 ([↗](https://aws.amazon.com/s3/))
+☐ GCS ([↗](https://cloud.google.com/storage))
+☐ Azure Blob ([↗](https://azure.microsoft.com/en-us/products/storage/blobs/))
+☐ Splunk ([↗](https://www.splunk.com/))
+☐ Elastic ([↗](https://www.elastic.co/))
 
 ---
 
