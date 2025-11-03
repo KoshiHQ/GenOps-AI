@@ -108,44 +108,44 @@ GenOps integrates natively with your AI and infrastructure layer to collect and 
 
 #### LLM & Model Providers
 
-✅ [OpenAI](https://github.com/KoshiHQ/GenOps-AI/tree/main/examples/openai) ([↗](https://openai.com/))
-☐ Azure OpenAI ([↗](https://azure.microsoft.com/en-us/products/ai-services/openai-service))
-✅ [Anthropic](https://github.com/KoshiHQ/GenOps-AI/tree/main/examples/anthropic) ([↗](https://www.anthropic.com/))
-✅ [OpenRouter](https://github.com/KoshiHQ/GenOps-AI/tree/main/examples/openrouter) ([↗](https://openrouter.ai/))
-☐ Mistral ([↗](https://mistral.ai/))
-☐ Lepton ([↗](https://www.lepton.ai/))
-☐ Gemini ([↗](https://deepmind.google/technologies/gemini/))
-☐ Ollama ([↗](https://ollama.com/))
-☐ Bedrock ([↗](https://aws.amazon.com/bedrock/))
-☐ SageMaker ([↗](https://aws.amazon.com/sagemaker/))
-☐ Replicate ([↗](https://replicate.com/))
-☐ Together ([↗](https://www.together.ai/))
-☐ Groq ([↗](https://groq.com/))  
+- ✅ [OpenAI](https://github.com/KoshiHQ/GenOps-AI/tree/main/examples/openai) (<a href="https://openai.com/" target="_blank">↗</a>)
+- ☐ Azure OpenAI (<a href="https://azure.microsoft.com/en-us/products/ai-services/openai-service" target="_blank">↗</a>)
+- ✅ [Anthropic](https://github.com/KoshiHQ/GenOps-AI/tree/main/examples/anthropic) (<a href="https://www.anthropic.com/" target="_blank">↗</a>)
+- ✅ [OpenRouter](https://github.com/KoshiHQ/GenOps-AI/tree/main/examples/openrouter) (<a href="https://openrouter.ai/" target="_blank">↗</a>)
+- ☐ Mistral (<a href="https://mistral.ai/" target="_blank">↗</a>)
+- ☐ Lepton (<a href="https://www.lepton.ai/" target="_blank">↗</a>)
+- ☐ Gemini (<a href="https://deepmind.google/technologies/gemini/" target="_blank">↗</a>)
+- ☐ Ollama (<a href="https://ollama.com/" target="_blank">↗</a>)
+- ☐ Bedrock (<a href="https://aws.amazon.com/bedrock/" target="_blank">↗</a>)
+- ☐ SageMaker (<a href="https://aws.amazon.com/sagemaker/" target="_blank">↗</a>)
+- ☐ Replicate (<a href="https://replicate.com/" target="_blank">↗</a>)
+- ☐ Together (<a href="https://www.together.ai/" target="_blank">↗</a>)
+- ☐ Groq (<a href="https://groq.com/" target="_blank">↗</a>)
 
 #### Frameworks & Tooling
 
-✅ [LangChain](https://github.com/KoshiHQ/GenOps-AI/tree/main/examples/langchain) ([↗](https://python.langchain.com/))
-☐ LlamaIndex ([↗](https://www.llamaindex.ai/))
-☐ LiteLLM ([↗](https://litellm.vercel.app/))
-☐ DSPy ([↗](https://dspy-docs.vercel.app/))
-☐ Guidance ([↗](https://github.com/guidance-ai/guidance))
-☐ CrewAI ([↗](https://www.crewai.com/))
-☐ OpenAI Agents ([↗](https://platform.openai.com/docs/assistants/overview))
-☐ Haystack ([↗](https://haystack.deepset.ai/))
-☐ LangGraph ([↗](https://langchain-ai.github.io/langgraph/))
-☐ Langflow ([↗](https://www.langflow.org/))  
+- ✅ [LangChain](https://github.com/KoshiHQ/GenOps-AI/tree/main/examples/langchain) (<a href="https://python.langchain.com/" target="_blank">↗</a>)
+- ☐ LlamaIndex (<a href="https://www.llamaindex.ai/" target="_blank">↗</a>)
+- ☐ LiteLLM (<a href="https://litellm.vercel.app/" target="_blank">↗</a>)
+- ☐ DSPy (<a href="https://dspy-docs.vercel.app/" target="_blank">↗</a>)
+- ☐ Guidance (<a href="https://github.com/guidance-ai/guidance" target="_blank">↗</a>)
+- ☐ CrewAI (<a href="https://www.crewai.com/" target="_blank">↗</a>)
+- ☐ OpenAI Agents (<a href="https://platform.openai.com/docs/assistants/overview" target="_blank">↗</a>)
+- ☐ Haystack (<a href="https://haystack.deepset.ai/" target="_blank">↗</a>)
+- ☐ LangGraph (<a href="https://langchain-ai.github.io/langgraph/" target="_blank">↗</a>)
+- ☐ Langflow (<a href="https://www.langflow.org/" target="_blank">↗</a>)
 
 #### Infrastructure & Runtime
 
-☐ Kubernetes ([↗](https://kubernetes.io/))
-☐ Cloudflare Workers ([↗](https://workers.cloudflare.com/))
-☐ Vercel AI SDK ([↗](https://sdk.vercel.ai/))
-☐ Ray ([↗](https://www.ray.io/))
-☐ Modal ([↗](https://modal.com/))
-☐ Fly.io ([↗](https://fly.io/))
-☐ AWS Lambda ([↗](https://aws.amazon.com/lambda/))
-☐ Google Cloud Run ([↗](https://cloud.google.com/run))
-☐ Azure Functions ([↗](https://azure.microsoft.com/en-us/products/functions/))  
+- ☐ Kubernetes (<a href="https://kubernetes.io/" target="_blank">↗</a>)
+- ☐ Cloudflare Workers (<a href="https://workers.cloudflare.com/" target="_blank">↗</a>)
+- ☐ Vercel AI SDK (<a href="https://sdk.vercel.ai/" target="_blank">↗</a>)
+- ☐ Ray (<a href="https://www.ray.io/" target="_blank">↗</a>)
+- ☐ Modal (<a href="https://modal.com/" target="_blank">↗</a>)
+- ☐ Fly.io (<a href="https://fly.io/" target="_blank">↗</a>)
+- ☐ AWS Lambda (<a href="https://aws.amazon.com/lambda/" target="_blank">↗</a>)
+- ☐ Google Cloud Run (<a href="https://cloud.google.com/run" target="_blank">↗</a>)
+- ☐ Azure Functions (<a href="https://azure.microsoft.com/en-us/products/functions/" target="_blank">↗</a>)
 
 ### Supported Destinations
 
@@ -153,46 +153,46 @@ GenOps exports standardized telemetry and governance events to your existing sta
 
 #### Observability & Monitoring
 
-✅ [OpenTelemetry Collector](https://github.com/KoshiHQ/GenOps-AI/tree/main/observability) ([↗](https://opentelemetry.io/docs/collector/))
-✅ [Datadog](https://github.com/KoshiHQ/GenOps-AI/tree/main/examples/observability/datadog_integration.py) ([↗](https://www.datadoghq.com/))
-✅ [Grafana](https://github.com/KoshiHQ/GenOps-AI/tree/main/observability/grafana) ([↗](https://grafana.com/))
-✅ [Loki](https://github.com/KoshiHQ/GenOps-AI/tree/main/observability/loki-config.yaml) ([↗](https://grafana.com/oss/loki/))
-✅ [Honeycomb](https://github.com/KoshiHQ/GenOps-AI/tree/main/examples/observability/honeycomb_integration.py) ([↗](https://www.honeycomb.io/))
-✅ [Prometheus](https://github.com/KoshiHQ/GenOps-AI/tree/main/observability/prometheus.yml) ([↗](https://prometheus.io/))
-✅ [Tempo](https://github.com/KoshiHQ/GenOps-AI/tree/main/observability/tempo-config.yaml) ([↗](https://grafana.com/oss/tempo/))
-☐ New Relic ([↗](https://newrelic.com/))
-☐ Jaeger ([↗](https://www.jaegertracing.io/))
-☐ SigNoz ([↗](https://signoz.io/))  
+- ✅ [OpenTelemetry Collector](https://github.com/KoshiHQ/GenOps-AI/tree/main/observability) (<a href="https://opentelemetry.io/docs/collector/" target="_blank">↗</a>)
+- ✅ [Datadog](https://github.com/KoshiHQ/GenOps-AI/tree/main/examples/observability/datadog_integration.py) (<a href="https://www.datadoghq.com/" target="_blank">↗</a>)
+- ✅ [Grafana](https://github.com/KoshiHQ/GenOps-AI/tree/main/observability/grafana) (<a href="https://grafana.com/" target="_blank">↗</a>)
+- ✅ [Loki](https://github.com/KoshiHQ/GenOps-AI/tree/main/observability/loki-config.yaml) (<a href="https://grafana.com/oss/loki/" target="_blank">↗</a>)
+- ✅ [Honeycomb](https://github.com/KoshiHQ/GenOps-AI/tree/main/examples/observability/honeycomb_integration.py) (<a href="https://www.honeycomb.io/" target="_blank">↗</a>)
+- ✅ [Prometheus](https://github.com/KoshiHQ/GenOps-AI/tree/main/observability/prometheus.yml) (<a href="https://prometheus.io/" target="_blank">↗</a>)
+- ✅ [Tempo](https://github.com/KoshiHQ/GenOps-AI/tree/main/observability/tempo-config.yaml) (<a href="https://grafana.com/oss/tempo/" target="_blank">↗</a>)
+- ☐ New Relic (<a href="https://newrelic.com/" target="_blank">↗</a>)
+- ☐ Jaeger (<a href="https://www.jaegertracing.io/" target="_blank">↗</a>)
+- ☐ SigNoz (<a href="https://signoz.io/" target="_blank">↗</a>)
 
 #### Cost & FinOps Platforms
 
-☐ OpenCost ([↗](https://www.opencost.io/))
-☐ Finout ([↗](https://www.finout.io/))
-☐ CloudZero ([↗](https://www.cloudzero.com/))
-☐ AWS Cost Explorer ([↗](https://aws.amazon.com/aws-cost-management/))
-☐ GCP Billing ([↗](https://cloud.google.com/billing/docs))
-☐ Azure Cost Management ([↗](https://azure.microsoft.com/en-us/products/cost-management/))
-☐ Cloudflare Workers AI Analytics ([↗](https://developers.cloudflare.com/workers-ai/))
-☐ Traceloop ([↗](https://traceloop.com/))
-☐ OpenLLMetry ([↗](https://github.com/traceloop/openllmetry))  
+- ☐ OpenCost (<a href="https://www.opencost.io/" target="_blank">↗</a>)
+- ☐ Finout (<a href="https://www.finout.io/" target="_blank">↗</a>)
+- ☐ CloudZero (<a href="https://www.cloudzero.com/" target="_blank">↗</a>)
+- ☐ AWS Cost Explorer (<a href="https://aws.amazon.com/aws-cost-management/" target="_blank">↗</a>)
+- ☐ GCP Billing (<a href="https://cloud.google.com/billing/docs" target="_blank">↗</a>)
+- ☐ Azure Cost Management (<a href="https://azure.microsoft.com/en-us/products/cost-management/" target="_blank">↗</a>)
+- ☐ Cloudflare Workers AI Analytics (<a href="https://developers.cloudflare.com/workers-ai/" target="_blank">↗</a>)
+- ☐ Traceloop (<a href="https://traceloop.com/" target="_blank">↗</a>)
+- ☐ OpenLLMetry (<a href="https://github.com/traceloop/openllmetry" target="_blank">↗</a>)
 
 ### Policy & Compliance
 
-☐ OPA (Open Policy Agent) ([↗](https://www.openpolicyagent.org/))
-☐ Kyverno ([↗](https://kyverno.io/))
-☐ Cloud Custodian ([↗](https://cloudcustodian.io/))
-☐ HashiCorp Sentinel ([↗](https://www.hashicorp.com/sentinel))
-☐ Rego-compatible policies  
+- ☐ OPA (Open Policy Agent) (<a href="https://www.openpolicyagent.org/" target="_blank">↗</a>)
+- ☐ Kyverno (<a href="https://kyverno.io/" target="_blank">↗</a>)
+- ☐ Cloud Custodian (<a href="https://cloudcustodian.io/" target="_blank">↗</a>)
+- ☐ HashiCorp Sentinel (<a href="https://www.hashicorp.com/sentinel" target="_blank">↗</a>)
+- ☐ Rego-compatible policies
 
 ### Data & Security Pipelines
 
-☐ BigQuery ([↗](https://cloud.google.com/bigquery))
-☐ Snowflake ([↗](https://www.snowflake.com/))
-☐ S3 ([↗](https://aws.amazon.com/s3/))
-☐ GCS ([↗](https://cloud.google.com/storage))
-☐ Azure Blob ([↗](https://azure.microsoft.com/en-us/products/storage/blobs/))
-☐ Splunk ([↗](https://www.splunk.com/))
-☐ Elastic ([↗](https://www.elastic.co/))
+- ☐ BigQuery (<a href="https://cloud.google.com/bigquery" target="_blank">↗</a>)
+- ☐ Snowflake (<a href="https://www.snowflake.com/" target="_blank">↗</a>)
+- ☐ S3 (<a href="https://aws.amazon.com/s3/" target="_blank">↗</a>)
+- ☐ GCS (<a href="https://cloud.google.com/storage" target="_blank">↗</a>)
+- ☐ Azure Blob (<a href="https://azure.microsoft.com/en-us/products/storage/blobs/" target="_blank">↗</a>)
+- ☐ Splunk (<a href="https://www.splunk.com/" target="_blank">↗</a>)
+- ☐ Elastic (<a href="https://www.elastic.co/" target="_blank">↗</a>)
 
 ---
 
