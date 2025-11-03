@@ -108,31 +108,44 @@ GenOps integrates natively with your AI and infrastructure layer to collect and 
 
 #### LLM & Model Providers
 
-✅ [OpenAI](https://openai.com/) / [Azure OpenAI](https://azure.microsoft.com/en-us/products/ai-services/openai-service)  
-✅ [Anthropic](https://www.anthropic.com/)  
-✅ [OpenRouter](https://openrouter.ai/) (Multi-provider routing)  
-☐ [Mistral](https://mistral.ai/) / [Lepton](https://www.lepton.ai/)  
-☐ [Gemini](https://deepmind.google/technologies/gemini/) (Google)  
-☐ [Ollama](https://ollama.com/) / Local Models  
-☐ [Bedrock](https://aws.amazon.com/bedrock/) / [SageMaker](https://aws.amazon.com/sagemaker/) (AWS)  
-☐ [Replicate](https://replicate.com/) / [Together](https://www.together.ai/) / [Groq](https://groq.com/)  
+✅ [OpenAI](https://github.com/KoshiHQ/GenOps-AI/tree/main/examples/openai) ([↗](https://openai.com/))
+☐ Azure OpenAI ([↗](https://azure.microsoft.com/en-us/products/ai-services/openai-service))
+✅ [Anthropic](https://github.com/KoshiHQ/GenOps-AI/tree/main/examples/anthropic) ([↗](https://www.anthropic.com/))
+✅ [OpenRouter](https://github.com/KoshiHQ/GenOps-AI/tree/main/examples/openrouter) ([↗](https://openrouter.ai/))
+☐ Mistral ([↗](https://mistral.ai/))
+☐ Lepton ([↗](https://www.lepton.ai/))
+☐ Gemini ([↗](https://deepmind.google/technologies/gemini/))
+☐ Ollama ([↗](https://ollama.com/))
+☐ Bedrock ([↗](https://aws.amazon.com/bedrock/))
+☐ SageMaker ([↗](https://aws.amazon.com/sagemaker/))
+☐ Replicate ([↗](https://replicate.com/))
+☐ Together ([↗](https://www.together.ai/))
+☐ Groq ([↗](https://groq.com/))  
 
 #### Frameworks & Tooling
 
-✅ [LangChain](https://python.langchain.com/) (Comprehensive integration)  
-☐ [LlamaIndex](https://www.llamaindex.ai/)  
-☐ [LiteLLM](https://litellm.vercel.app/)  
-☐ [DSPy](https://dspy-docs.vercel.app/) / [Guidance](https://github.com/guidance-ai/guidance)  
-☐ [CrewAI](https://www.crewai.com/) / OpenAI Agents  
-☐ [Haystack](https://haystack.deepset.ai/)  
-☐ [LangGraph](https://langchain-ai.github.io/langgraph/) / [Langflow](https://www.langflow.org/)  
+✅ [LangChain](https://github.com/KoshiHQ/GenOps-AI/tree/main/examples/langchain) ([↗](https://python.langchain.com/))
+☐ LlamaIndex ([↗](https://www.llamaindex.ai/))
+☐ LiteLLM ([↗](https://litellm.vercel.app/))
+☐ DSPy ([↗](https://dspy-docs.vercel.app/))
+☐ Guidance ([↗](https://github.com/guidance-ai/guidance))
+☐ CrewAI ([↗](https://www.crewai.com/))
+☐ OpenAI Agents ([↗](https://platform.openai.com/docs/assistants/overview))
+☐ Haystack ([↗](https://haystack.deepset.ai/))
+☐ LangGraph ([↗](https://langchain-ai.github.io/langgraph/))
+☐ Langflow ([↗](https://www.langflow.org/))  
 
 #### Infrastructure & Runtime
 
-☐ [Kubernetes](https://kubernetes.io/) (K8s)  
-☐ [Cloudflare Workers](https://workers.cloudflare.com/) / [Vercel AI SDK](https://sdk.vercel.ai/)  
-☐ [Ray](https://www.ray.io/) / [Modal](https://modal.com/) / [Fly.io](https://fly.io/)  
-☐ Serverless runtimes ([Lambda](https://aws.amazon.com/lambda/), [Cloud Run](https://cloud.google.com/run), [Functions](https://azure.microsoft.com/en-us/products/functions/))  
+☐ Kubernetes ([↗](https://kubernetes.io/))
+☐ Cloudflare Workers ([↗](https://workers.cloudflare.com/))
+☐ Vercel AI SDK ([↗](https://sdk.vercel.ai/))
+☐ Ray ([↗](https://www.ray.io/))
+☐ Modal ([↗](https://modal.com/))
+☐ Fly.io ([↗](https://fly.io/))
+☐ AWS Lambda ([↗](https://aws.amazon.com/lambda/))
+☐ Google Cloud Run ([↗](https://cloud.google.com/run))
+☐ Azure Functions ([↗](https://azure.microsoft.com/en-us/products/functions/))  
 
 ### Supported Destinations
 
@@ -140,22 +153,28 @@ GenOps exports standardized telemetry and governance events to your existing sta
 
 #### Observability & Monitoring
 
-✅ [OpenTelemetry Collector](https://opentelemetry.io/docs/collector/)  
-✅ [Datadog](https://www.datadoghq.com/)  
-✅ [Grafana](https://grafana.com/) / [Loki](https://grafana.com/oss/loki/)  
-✅ [Honeycomb](https://www.honeycomb.io/)  
-✅ [Prometheus](https://prometheus.io/) / [Tempo](https://grafana.com/oss/tempo/)  
-☐ [New Relic](https://newrelic.com/)  
-☐ [Jaeger](https://www.jaegertracing.io/)  
-☐ [SigNoz](https://signoz.io/)  
+✅ [OpenTelemetry Collector](https://github.com/KoshiHQ/GenOps-AI/tree/main/observability) ([↗](https://opentelemetry.io/docs/collector/))
+✅ [Datadog](https://github.com/KoshiHQ/GenOps-AI/tree/main/examples/observability/datadog_integration.py) ([↗](https://www.datadoghq.com/))
+✅ [Grafana](https://github.com/KoshiHQ/GenOps-AI/tree/main/observability/grafana) ([↗](https://grafana.com/))
+✅ [Loki](https://github.com/KoshiHQ/GenOps-AI/tree/main/observability/loki-config.yaml) ([↗](https://grafana.com/oss/loki/))
+✅ [Honeycomb](https://github.com/KoshiHQ/GenOps-AI/tree/main/examples/observability/honeycomb_integration.py) ([↗](https://www.honeycomb.io/))
+✅ [Prometheus](https://github.com/KoshiHQ/GenOps-AI/tree/main/observability/prometheus.yml) ([↗](https://prometheus.io/))
+✅ [Tempo](https://github.com/KoshiHQ/GenOps-AI/tree/main/observability/tempo-config.yaml) ([↗](https://grafana.com/oss/tempo/))
+☐ New Relic ([↗](https://newrelic.com/))
+☐ Jaeger ([↗](https://www.jaegertracing.io/))
+☐ SigNoz ([↗](https://signoz.io/))  
 
 #### Cost & FinOps Platforms
 
-☐ [OpenCost](https://www.opencost.io/)  
-☐ [Finout](https://www.finout.io/) / [CloudZero](https://www.cloudzero.com/)  
-☐ [AWS Cost Explorer](https://aws.amazon.com/aws-cost-management/) / [GCP Billing](https://cloud.google.com/billing/docs) / [Azure Cost Management](https://azure.microsoft.com/en-us/products/cost-management/)  
-☐ [Cloudflare Workers AI Analytics](https://developers.cloudflare.com/workers-ai/)  
-☐ [Traceloop](https://traceloop.com/) / [OpenLLMetry](https://github.com/traceloop/openllmetry)  
+☐ OpenCost ([↗](https://www.opencost.io/))
+☐ Finout ([↗](https://www.finout.io/))
+☐ CloudZero ([↗](https://www.cloudzero.com/))
+☐ AWS Cost Explorer ([↗](https://aws.amazon.com/aws-cost-management/))
+☐ GCP Billing ([↗](https://cloud.google.com/billing/docs))
+☐ Azure Cost Management ([↗](https://azure.microsoft.com/en-us/products/cost-management/))
+☐ Cloudflare Workers AI Analytics ([↗](https://developers.cloudflare.com/workers-ai/))
+☐ Traceloop ([↗](https://traceloop.com/))
+☐ OpenLLMetry ([↗](https://github.com/traceloop/openllmetry))  
 
 ### Policy & Compliance
 
