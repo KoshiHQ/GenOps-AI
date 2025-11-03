@@ -88,8 +88,8 @@ class TestGenOpsTelemetry:
 
     def test_trace_operation_success(self, telemetry, mock_span_recorder):
         """Test trace_operation with successful execution."""
-        with telemetry.trace_operation("test.success") as span:
-            result = "operation completed"
+        with telemetry.trace_operation("test.success"):
+            pass
 
         spans = mock_span_recorder.get_finished_spans()
         assert len(spans) == 1
@@ -100,7 +100,7 @@ class TestGenOpsTelemetry:
         test_error = ValueError("Test error")
 
         with pytest.raises(ValueError):
-            with telemetry.trace_operation("test.error") as span:
+            with telemetry.trace_operation("test.error"):
                 raise test_error
 
         spans = mock_span_recorder.get_finished_spans()
@@ -249,7 +249,7 @@ class TestGenOpsTelemetry:
     @patch("time.time", return_value=1234567890)
     def test_timestamp_recording(self, mock_time, telemetry, mock_span_recorder):
         """Test that timestamps are recorded correctly."""
-        with telemetry.trace_operation("test.timestamp") as span:
+        with telemetry.trace_operation("test.timestamp"):
             pass
 
         spans = mock_span_recorder.get_finished_spans()
@@ -260,7 +260,7 @@ class TestGenOpsTelemetry:
         """Test GenOpsTelemetry with custom tracer name."""
         custom_telemetry = GenOpsTelemetry("custom-tracer")
 
-        with custom_telemetry.trace_operation("test.custom") as span:
+        with custom_telemetry.trace_operation("test.custom"):
             pass
 
         spans = mock_otel_setup.get_finished_spans()

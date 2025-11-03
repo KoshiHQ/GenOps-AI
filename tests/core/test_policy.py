@@ -397,7 +397,7 @@ class TestGlobalPolicyFunctions:
         @enforce_policy(["test_policy"])
         def test_function():
             # Create a span during function execution
-            with telemetry.trace_operation("test.operation") as span:
+            with telemetry.trace_operation("test.operation"):
                 return "success"
 
         result = test_function()

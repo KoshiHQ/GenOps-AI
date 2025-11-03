@@ -24,7 +24,7 @@ class TestGenOpsOpenAIAdapter:
         mock_openai_class = mock_openai_import
         mock_openai_class.return_value = MockOpenAIClient()
 
-        adapter = GenOpsOpenAIAdapter(api_key="test-key")
+        GenOpsOpenAIAdapter(api_key="test-key")
 
         # Verify OpenAI client was created with kwargs
         mock_openai_class.assert_called_once_with(api_key="test-key")
@@ -81,7 +81,7 @@ class TestGenOpsOpenAIAdapter:
         )
         mock_client.chat.completions.create.return_value = mock_response
 
-        response = adapter.chat_completions_create(
+        adapter.chat_completions_create(
             model="gpt-3.5-turbo",
             messages=[{"role": "user", "content": "Test message"}],
         )
@@ -110,7 +110,7 @@ class TestGenOpsOpenAIAdapter:
         )
         mock_client.chat.completions.create.return_value = mock_response
 
-        response = adapter.chat_completions_create(
+        adapter.chat_completions_create(
             model="gpt-4",
             messages=[{"role": "user", "content": "Complex reasoning task"}],
         )
@@ -143,7 +143,7 @@ class TestGenOpsOpenAIAdapter:
             mock_span = MagicMock()
             mock_trace.return_value.__enter__.return_value = mock_span
 
-            response = adapter.chat_completions_create(
+            adapter.chat_completions_create(
                 model="gpt-3.5-turbo",
                 messages=[{"role": "user", "content": "Test"}],
                 **governance_attrs,
@@ -218,7 +218,7 @@ class TestGenOpsOpenAIAdapter:
         mock_client = MockOpenAIClient()
         adapter = GenOpsOpenAIAdapter(client=mock_client)
 
-        response = adapter.chat_completions_create(
+        adapter.chat_completions_create(
             model="gpt-3.5-turbo",
             messages=[{"role": "user", "content": "Test"}],
             stream=True,
@@ -234,7 +234,7 @@ class TestGenOpsOpenAIAdapter:
     def test_multiple_models_cost_accuracy(self, mock_openai_import):
         """Test cost calculation accuracy across different models."""
         mock_client = MockOpenAIClient()
-        adapter = GenOpsOpenAIAdapter(client=mock_client)
+        GenOpsOpenAIAdapter(client=mock_client)
 
         test_models = [
             {
@@ -279,7 +279,7 @@ class TestGenOpsOpenAIAdapter:
         )
         mock_client.chat.completions.create.return_value = mock_response
 
-        response = adapter.chat_completions_create(
+        adapter.chat_completions_create(
             model="unknown-model", messages=[{"role": "user", "content": "Test"}]
         )
 
@@ -296,7 +296,7 @@ class TestGenOpsOpenAIAdapter:
         mock_client = MockOpenAIClient()
         adapter = GenOpsOpenAIAdapter(client=mock_client)
 
-        response = adapter.chat_completions_create(
+        adapter.chat_completions_create(
             model="gpt-3.5-turbo",
             messages=[{"role": "user", "content": "Test"}],
             temperature=0.8,

@@ -82,14 +82,14 @@ class TestGenOpsInstrumentor:
         """Test OpenTelemetry setup with OTLP exporter."""
         instrumentor = GenOpsInstrumentor()
 
-        with patch("opentelemetry.trace.set_tracer_provider") as mock_set_provider:
+        with patch("opentelemetry.trace.set_tracer_provider"):
             with patch(
                 "genops.auto_instrumentation.TracerProvider"
-            ) as mock_tracer_provider:
+            ):
                 with patch("genops.auto_instrumentation.OTLPSpanExporter") as mock_otlp:
                     with patch(
                         "genops.auto_instrumentation.BatchSpanProcessor"
-                    ) as mock_processor:
+                    ):
                         instrumentor._setup_opentelemetry(
                             service_name="test-service",
                             exporter_type="otlp",
@@ -174,7 +174,7 @@ class TestGenOpsInstrumentor:
             with patch.object(
                 instrumentor, "_instrument_provider", return_value=True
             ) as mock_instrument:
-                instrumented = instrumentor._instrument_providers()
+                instrumentor._instrument_providers()
 
                 # Should try to instrument all providers
                 expected_calls = [call("openai"), call("anthropic")]
@@ -187,7 +187,7 @@ class TestGenOpsInstrumentor:
         with patch.object(
             instrumentor, "_instrument_provider", return_value=True
         ) as mock_instrument:
-            instrumented = instrumentor._instrument_providers(["openai"])
+            instrumentor._instrument_providers(["openai"])
 
             # Should only instrument OpenAI
             mock_instrument.assert_called_once_with("openai")
@@ -400,7 +400,7 @@ class TestAutoInstrumentationIntegration:
                 return_value=True,
             ) as mock_instrument:
                 # Initialize with only OpenAI
-                instrumentor = init(service_name="openai-only", providers=["openai"])
+                init(service_name="openai-only", providers=["openai"])
 
                 # Should only instrument OpenAI
                 mock_instrument.assert_called_once_with("openai")
@@ -447,5 +447,5 @@ class TestAutoInstrumentationIntegration:
                 assert instrumentor is not None
 
                 # Status should reflect the error state
-                status_info = status()
+                status()
                 # Implementation should handle this gracefully
