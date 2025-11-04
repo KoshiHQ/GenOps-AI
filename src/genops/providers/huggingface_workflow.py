@@ -53,7 +53,7 @@ def production_workflow_context(
     telemetry = GenOpsTelemetry()
     
     # Start workflow tracking with cost aggregation
-    with create_huggingface_cost_context(workflow_id, governance_attrs) as cost_context:
+    with create_huggingface_cost_context(workflow_id) as cost_context:
         with telemetry.trace_operation(
             operation_name=f"huggingface.workflow.{workflow_name}",
             **governance_attrs

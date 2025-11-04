@@ -629,7 +629,8 @@ data:
     
     print(f"\n📄 Example Secret:")
     print("```yaml")
-    print(secret_manifest)
+    print("# Secret manifest template - replace <base64-encoded-token> with actual encoded token")
+    print(secret_manifest.replace("<base64-encoded-token>", "[REDACTED-BASE64-TOKEN]"))
     print("```")
     
     # Example HPA with custom metrics
