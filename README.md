@@ -295,6 +295,8 @@ Licensed under the Apache License, Version 2.0. See [LICENSE](LICENSE) for detai
 
 *When you're ready to scale AI governance across larger organizations, the GenOps framework provides the instrumentation foundation for enterprise governance platforms.*
 
+*When you're ready to scale AI governance across larger organizations, GenOps provides the foundation for enterprise control planes and governance workflows.*
+
 ---
 
 ## 🤝 **Community & Quick Wins**
