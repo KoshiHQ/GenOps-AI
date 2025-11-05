@@ -8,11 +8,10 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ### Mission: "Governance for AI, Built on OpenTelemetry"
 
-GenOps AI builds **alongside OpenLLMetry**, on the **OpenTelemetry foundation** — interoperable by design, independent by governance.
+GenOps AI builds on the **OpenTelemetry foundation** — interoperable by design, independent governance for AI systems.
 It standardizes **cost, policy, compliance, and evaluation telemetry** for AI workloads across internal teams, departments, and per-customer usage.
 
-Where **OpenLLMetry** defines *what* to trace (LLM prompts, completions, tokens),
-**GenOps** defines *why and how* — the governance layer that turns telemetry into actionable accountability.
+**GenOps** extends standard LLM observability with *why and how* — the governance layer that turns telemetry into actionable accountability for AI systems.
 
 ---
 
@@ -44,7 +43,7 @@ It provides a **vendor-neutral, OTel-native SDK** that enables teams to:
 * **License:** Apache 2.0 (permissive and OSS-friendly)
 * **Governance:** Open community development with maintainer stewardship
 * **Community:** Public RFC process for spec evolution; open contribution model
-* **Vendor Neutrality:** Aligns with OpenTelemetry and OpenLLMetry specs; avoids lock-in with any observability or model vendor
+* **Vendor Neutrality:** Aligns with OpenTelemetry standards; avoids lock-in with any observability or model vendor
 
 ### Philosophy: Developer-first, Governance-aware
 
@@ -61,12 +60,11 @@ It provides a **vendor-neutral, OTel-native SDK** that enables teams to:
 
 ```
 OpenTelemetry (foundation)
-   ├── OpenLLMetry (LLM observability: prompts, completions, latency)
    └── GenOps-OTel (AI governance: cost, policy, compliance, evaluation)
 ```
 
-GenOps operates *next to* OpenLLMetry, not on top of it — interoperable by design, but independent by governance.
-Both layers export standard OTLP signals, enabling any organization to maintain full autonomy and transparency.
+GenOps extends OpenTelemetry with AI governance semantics — interoperable by design, independent by governance.
+Standard OTLP signals enable any organization to maintain full autonomy and transparency.
 
 ---
 
@@ -121,23 +119,55 @@ genops-ai/
 
 ## Ecosystem Vision
 
-### Interoperability Focus
+### Cross-Stack Tracking Without Tool Replacement
 
-GenOps doesn't replace observability — it **enriches it with governance semantics**.
+GenOps connects your existing AI tools without replacing them — it adds the **cross-stack tracking layer your AI stack is missing**.
 
-Compatible with:
+**Keep the tools you love, add the tracking you need:**
 
-* **OpenTelemetry** (base standard)
-* **OpenLLMetry** (LLM observability layer)
-* **All major observability platforms:** Datadog, Honeycomb, New Relic, Grafana Tempo, Dynatrace, Splunk, Instana, Highlight, Traceloop
-* **All major model providers:** OpenAI, Anthropic, Bedrock, Gemini, Mistral, Together, Ollama, WatsonX
+**✅ AI & LLM Ecosystem**
+* **OpenAI** - Direct API tracking with cost attribution
+* **Anthropic** - Complete request/response telemetry  
+* **AWS Bedrock** - Multi-model cost aggregation
+* **Google Gemini** - Usage and performance tracking
+* **Hugging Face** - Inference endpoint monitoring
+* **OpenRouter** - Multi-provider routing telemetry
+* **LangChain** - Framework-level operation tracking
 
-### Community Growth
+**✅ Observability Platforms**
+* **Datadog** - Native OpenTelemetry integration
+* **Grafana/Tempo** - Distributed tracing support
+* **Honeycomb** - AI-specific dashboard templates
+* **Prometheus** - Cost and usage metrics collection
+* **Standard OTLP** - Works with 15+ observability platforms
 
-* Encourage third-party adapters via `genops-adapters` template repo
-* Recognize contributors who add new frameworks and exporters
-* Co-marketing for high-quality integrations and case studies
-* Public governance RFCs (like OTel SIGs)
+**☐ Coming Soon**
+* **LlamaIndex** - RAG pipeline tracking
+* **Replicate** - Model hosting integration
+* **Mistral** - European AI provider support
+* **Ollama** - Local model tracking
+
+### Community Growth & Contributions
+
+**5-minute contributions welcome!** Every improvement helps the community grow.
+
+**🚀 Quick Wins for New Contributors:**
+* Add new AI provider adapters - follow established patterns
+* Create dashboard templates for popular observability platforms  
+* Improve documentation with real-world examples
+* Fix CI tests and improve development workflows
+
+**🏗️ Bigger Impact Opportunities:**
+* Cross-stack tracking patterns for complex AI workflows
+* Enterprise governance features and policy automation
+* Performance optimization and scaling improvements
+* Integration with emerging AI platforms and tools
+
+**📋 Community Standards:**
+* Public RFC process for major feature decisions (like OpenTelemetry SIGs)
+* Recognition for high-quality integrations and community contributions
+* Open development with transparent roadmaps and contributor guidelines
+* Collaborative approach to expanding the AI observability ecosystem
 
 ---
 
@@ -190,19 +220,6 @@ class FrameworkCostSummary:
     unique_providers: Set[str]          # Automatic deduplication
 ```
 
-### Testing Strategy (Required Standards)
-
-**Layered Test Architecture:**
-- **Unit Tests**: Individual component testing (~35 tests per adapter)  
-- **Integration Tests**: End-to-end workflow testing (~17 tests per adapter)
-- **Cost Aggregation Tests**: Multi-provider scenarios (~24 tests per adapter)
-
-**Critical Testing Patterns:**
-- Context manager lifecycle testing (`__enter__`/`__exit__`)
-- Exception handling within instrumentation
-- Cost calculation accuracy across providers
-- Framework detection and graceful degradation
-
 ### Implementation Best Practices
 
 **Architecture:**
@@ -235,213 +252,6 @@ class FrameworkCostSummary:
 - ❌ Over-mocking (50+ line mock setups)
 - ❌ Testing implementation details vs behavior
 - ❌ Insufficient boundary condition coverage
-
-### Framework Adapter Roadmap
-
-**Training Frameworks (High Priority):**
-- **PyTorch**: Training cost tracking, GPU utilization, distributed training overhead
-- **TensorFlow**: Model checkpointing costs, gradient computation, data loading performance
-- Cost models: Compute hours, GPU memory usage, storage for model artifacts
-
-**Framework Implementation Priority:**
-1. PyTorch (Training/Inference)
-2. TensorFlow (Training/Inference) 
-3. LlamaIndex (RAG/Retrieval)
-4. Haystack (NLP Pipelines)
-5. Transformers (Model Loading/Inference)
-6. AutoGen (Multi-agent workflows)
-
----
-
-## Developer Experience Standards
-
-### Universal Framework Adapter Principles
-
-All framework adapters MUST follow these developer experience standards to ensure consistent, frictionless adoption:
-
-### Documentation Architecture (Required for Every Adapter)
-
-**Dual Documentation Strategy:**
-1. **`{framework}-quickstart.md`** - 5-minute value demonstration
-   - Zero-code auto-instrumentation setup
-   - Single working example with immediate value
-   - Basic cost tracking demonstration
-   - Setup validation and troubleshooting
-
-2. **`integrations/{framework}.md`** - Comprehensive integration guide
-   - Complete feature documentation with code examples
-   - All integration patterns (auto, manual, context managers)
-   - Advanced use cases and production patterns
-   - Performance considerations and best practices
-   - Complete API reference with governance attributes
-
-### Developer Onboarding Workflow (The "Golden Path")
-
-**Phase 1: Immediate Value (≤ 5 minutes)**
-```python
-# Every framework must support this pattern
-from genops import auto_instrument
-auto_instrument()  # Zero-code setup
-
-# Existing framework code works unchanged
-result = framework_operation()  # Automatically tracked!
-```
-
-**Phase 2: Progressive Control (≤ 30 minutes)**
-```python
-# Manual instrumentation with consistent API
-from genops.providers.{framework} import instrument_{framework}
-
-adapter = instrument_{framework}()
-result = adapter.instrument_{operation_type}(
-    framework_object,
-    # Governance attributes (consistent across ALL frameworks)
-    team="team-name", 
-    project="project-name",
-    customer_id="customer-id"
-)
-```
-
-**Phase 3: Advanced Features (≤ 2 hours)**
-- Multi-provider cost aggregation
-- Context manager patterns
-- Custom policy enforcement
-- Performance optimization
-
-### API Design Standards (Enforced Consistency)
-
-**Universal Method Naming:**
-- `instrument_{framework}()` - Main adapter factory
-- `instrument_{operation_type}()` - Operation-specific instrumentation
-- `validate_setup()` - Built-in setup verification
-- `create_{framework}_cost_context()` - Cost aggregation context manager
-
-**Consistent Governance Attributes:**
-```python
-# These attributes MUST be supported by every adapter
-governance_attrs = {
-    "team": str,           # Cost attribution and access control
-    "project": str,        # Project-level cost tracking  
-    "customer_id": str,    # Customer attribution for billing
-    "environment": str,    # Environment segregation
-    "cost_center": str,    # Financial reporting
-    "feature": str         # Feature-level cost attribution
-}
-```
-
-**Error Handling Standards:**
-- Graceful degradation when framework not available
-- Specific error messages with actionable fix suggestions
-- Built-in validation utilities with diagnostic information
-- Fallback behavior for missing provider dependencies
-
-### Required Examples Structure
-
-**Every framework adapter MUST include these examples:**
-```
-examples/{framework}/
-├── README.md                     # Framework-specific overview
-├── setup_validation.py          # Verify setup works
-├── basic_tracking.py            # Simple instrumentation  
-├── auto_instrumentation.py      # Zero-code setup demo
-├── cost_tracking.py            # Multi-provider cost aggregation
-├── {framework}_specific_advanced.py  # Framework specialized features
-└── production_patterns.py      # Performance & observability patterns
-```
-
-### Validation Utilities (Required for Every Adapter)
-
-**Standard Validation Interface:**
-```python
-from genops.providers.{framework} import validate_setup, print_validation_result
-
-def validate_setup() -> ValidationResult:
-    """Comprehensive setup validation returning structured results."""
-    pass
-
-def print_validation_result(result: ValidationResult) -> None:
-    """User-friendly validation result display with fix suggestions.""" 
-    pass
-```
-
-**Validation Coverage Requirements:**
-- Environment variables and API keys
-- Framework and GenOps dependencies  
-- OpenTelemetry configuration
-- Provider-specific setup
-- Live integration testing (when possible)
-- Specific fix suggestions for each issue type
-
-### Cost Tracking Architecture (Universal Patterns)
-
-**Multi-Provider Support:**
-```python
-# Every adapter supports multiple backend providers
-with create_{framework}_cost_context("operation_id") as context:
-    # Multiple providers automatically aggregated
-    result1 = provider1_operation()
-    result2 = provider2_operation() 
-    
-    summary = context.get_final_summary()
-    # Unified cost across all providers
-```
-
-**Framework-Agnostic Cost Structure:**
-```python
-@dataclass
-class FrameworkCostSummary:
-    total_cost: float
-    currency: str = "USD"
-    cost_by_provider: Dict[str, float]
-    cost_by_model: Dict[str, float] 
-    unique_providers: Set[str]
-    total_time: float
-    governance_attributes: Dict[str, str]
-```
-
-### Testing Standards
-
-**Required Test Coverage:**
-- Unit tests for adapter functionality (~35 tests)
-- Integration tests for end-to-end workflows (~17 tests)  
-- Cost aggregation tests for multi-provider scenarios (~24 tests)
-- Framework detection and graceful degradation tests
-- Validation utility comprehensive coverage
-
-### Performance & Production Considerations
-
-**Built-in Performance Features:**
-- Sampling configuration for high-volume applications
-- Async telemetry export to minimize overhead
-- Configurable log levels to control verbosity  
-- Framework-specific performance optimizations
-
-**Production Integration Patterns:**
-- Container/Docker configuration examples
-- Kubernetes deployment configurations
-- CI/CD integration examples  
-- Observability platform integrations
-
-### Quality Gates for Framework Adapters
-
-**Before any framework adapter is considered complete:**
-✅ Dual documentation (quickstart + comprehensive) exists
-✅ Auto-instrumentation works with zero code changes  
-✅ All required examples are implemented and tested
-✅ Validation utilities provide comprehensive diagnostics
-✅ Multi-provider cost aggregation is implemented
-✅ Test coverage meets standards (75+ tests total)
-✅ Performance considerations are documented
-✅ Production integration patterns are provided
-
-**Developer Experience Validation:**
-- New developer can get value in ≤ 5 minutes
-- Setup validation catches common issues with fixes
-- Progressive complexity path is clear and documented
-- All examples are executable and work immediately
-- Documentation answers common questions proactively
-
-This framework ensures every adapter provides consistent, high-quality developer experience, accelerating adoption and reducing support overhead.
 
 ---
 
@@ -650,16 +460,15 @@ If the answer is not an emphatic "yes," the implementation is not ready for rele
 ## Key References
 
 * **OpenTelemetry:** [https://opentelemetry.io](https://opentelemetry.io)
-* **OpenLLMetry:** [https://github.com/traceloop/openllmetry](https://github.com/traceloop/openllmetry)
 * **Next.js → Vercel Playbook**
 * **Sentry → Sentry Cloud Playbook**
-* **Open-core Model:** "Open Source standard, Closed Source experience"
+* **Open-core Model:** "Open Source standard, Best-in-class developer experience"
 
 ---
 
 ### TL;DR (for Claude Code)
 
-> GenOps AI builds *alongside* OpenLLMetry on the OpenTelemetry foundation —
-> **interoperable by design, independent by governance.**
-> It defines open-source semantics for AI cost, policy, and compliance telemetry.
+> GenOps AI extends OpenTelemetry with governance semantics for AI systems —
+> **cross-stack tracking without vendor lock-in.**
+> It defines open-source telemetry standards for AI cost, policy, and compliance.
 > Built and maintained as an open-source project under the Apache 2.0 license.
