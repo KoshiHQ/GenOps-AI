@@ -231,7 +231,7 @@ As governance needs grow beyond what the framework can handle alone, teams typic
 - ✅ [Google Gemini](https://github.com/KoshiHQ/GenOps-AI/tree/main/examples/gemini) (<a href="https://deepmind.google/technologies/gemini/" target="_blank">↗</a>)
 - ✅ [Replicate](https://github.com/KoshiHQ/GenOps-AI/tree/main/examples/replicate) (<a href="https://replicate.com/" target="_blank">↗</a>)
 - ✅ [LangChain](https://github.com/KoshiHQ/GenOps-AI/tree/main/examples/langchain) (<a href="https://python.langchain.com/" target="_blank">↗</a>)
-- ☐ LlamaIndex (<a href="https://www.llamaindex.ai/" target="_blank">↗</a>)
+- ✅ [LlamaIndex](https://github.com/KoshiHQ/GenOps-AI/tree/main/examples/llamaindex) (<a href="https://www.llamaindex.ai/" target="_blank">↗</a>)
 - ☐ Ollama (<a href="https://ollama.com/" target="_blank">↗</a>)
 - ☐ Cohere (<a href="https://cohere.com/" target="_blank">↗</a>)
 - ☐ Mistral (<a href="https://mistral.ai/" target="_blank">↗</a>)
