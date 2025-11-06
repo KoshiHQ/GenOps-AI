@@ -621,11 +621,14 @@ def print_validation_result(result: ValidationResult, detailed: bool = False):
             if detailed and issue.details:
                 print(f"     Details: {issue.details}")
     
-    # Show environment info
+    # Show environment info (filter out sensitive data)
     if detailed and result.environment_info:
         print(f"\n🔧 **Environment Information:**")
+        # Filter out sensitive keys to prevent credential logging
+        sensitive_keys = {'api_key_format', 'api_key', 'password', 'token', 'secret'}
         for key, value in result.environment_info.items():
-            print(f"   • {key}: {value}")
+            if key.lower() not in sensitive_keys and not any(sensitive in key.lower() for sensitive in sensitive_keys):
+                print(f"   • {key}: {value}")
     
     # Next steps
     print(f"\n🚀 **Next Steps:**")

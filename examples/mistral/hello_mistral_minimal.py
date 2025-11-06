@@ -34,7 +34,7 @@ def main():
         print("   Set it: export MISTRAL_API_KEY='your-key'")
         return False
     
-    print(f"✅ Mistral API key found: {api_key[:8]}...{api_key[-4:]}")
+    print("✅ Mistral API key found and validated")
     
     # Check dependencies
     try:
