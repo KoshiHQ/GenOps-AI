@@ -235,7 +235,7 @@ As governance needs grow beyond what the framework can handle alone, teams typic
 - ✅ [Ollama](https://github.com/KoshiHQ/GenOps-AI/tree/main/examples/ollama) (<a href="https://ollama.com/" target="_blank">↗</a>)
 - ✅ [Cohere](https://github.com/KoshiHQ/GenOps-AI/tree/main/examples/cohere) (<a href="https://cohere.com/" target="_blank">↗</a>)
 - ✅ [Mistral](https://github.com/KoshiHQ/GenOps-AI/tree/main/examples/mistral) (<a href="https://mistral.ai/" target="_blank">↗</a>)
-- ☐ Helicone (<a href="https://helicone.ai/" target="_blank">↗</a>)
+- ✅ [Helicone](https://github.com/KoshiHQ/GenOps-AI/tree/main/examples/helicone) (<a href="https://helicone.ai/" target="_blank">↗</a>)
 - ☐ Langfuse (<a href="https://langfuse.com/" target="_blank">↗</a>)
 - ☐ Traceloop (<a href="https://traceloop.com/" target="_blank">↗</a>)
 - ☐ OpenLLMetry (<a href="https://github.com/traceloop/openllmetry" target="_blank">↗</a>)

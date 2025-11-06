@@ -24,6 +24,15 @@ from genops.core.context import (
     set_user_context,
     update_default_attributes,
 )
+
+# Provider integrations - Key functions for easy access
+try:
+    from genops.providers import instrument_helicone
+    _helicone_available = True
+except ImportError:
+    def instrument_helicone(*args, **kwargs):
+        raise ImportError("Helicone provider not available. Install with: pip install 'genops[helicone]'")
+    _helicone_available = False
 from genops.core.context_manager import track, track_enhanced
 
 # Multi-provider cost aggregation
@@ -78,6 +87,8 @@ __all__ = [
     "register_framework_provider",
     "get_available_frameworks",
     "get_framework_status",
+    # Provider integrations
+    "instrument_helicone",
     # Attribution context management
     "set_default_attributes",
     "get_default_attributes",

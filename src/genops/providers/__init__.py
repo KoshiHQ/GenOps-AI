@@ -90,6 +90,36 @@ except ImportError:
 
     _bedrock_available = False
 
+try:
+    from genops.providers.helicone import (
+        instrument_helicone,
+        GenOpsHeliconeAdapter,
+        create_helicone_adapter,
+    )
+    from genops.providers.helicone_validation import (
+        validate_setup as validate_helicone_setup,
+        print_validation_result as print_helicone_validation_result,
+    )
+    _helicone_available = True
+except ImportError:
+    # Create stub functions for unavailable providers
+    def instrument_helicone(*args, **kwargs):
+        raise ImportError("Helicone provider not available. Install with: pip install 'genops[helicone]'")
+
+    def GenOpsHeliconeAdapter(*args, **kwargs):
+        raise ImportError("Helicone provider not available. Install with: pip install 'genops[helicone]'")
+    
+    def create_helicone_adapter(*args, **kwargs):
+        raise ImportError("Helicone provider not available. Install with: pip install 'genops[helicone]'")
+    
+    def validate_helicone_setup(*args, **kwargs):
+        raise ImportError("Helicone provider not available. Install with: pip install 'genops[helicone]'")
+    
+    def print_helicone_validation_result(*args, **kwargs):
+        raise ImportError("Helicone provider not available. Install with: pip install 'genops[helicone]'")
+
+    _helicone_available = False
+
 # Explicit __all__ definition with all available exports
 __all__ = [
     "instrument_openai",
@@ -106,4 +136,9 @@ __all__ = [
     "GenOpsBedrockAdapter",
     "validate_bedrock_setup",
     "print_bedrock_validation_result",
+    "instrument_helicone",
+    "GenOpsHeliconeAdapter",
+    "create_helicone_adapter",
+    "validate_helicone_setup",
+    "print_helicone_validation_result",
 ]
