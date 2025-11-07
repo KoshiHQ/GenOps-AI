@@ -33,6 +33,14 @@ except ImportError:
     def instrument_helicone(*args, **kwargs):
         raise ImportError("Helicone provider not available. Install with: pip install 'genops[helicone]'")
     _helicone_available = False
+
+try:
+    from genops.providers import instrument_langfuse
+    _langfuse_available = True
+except ImportError:
+    def instrument_langfuse(*args, **kwargs):
+        raise ImportError("Langfuse provider not available. Install with: pip install 'genops[langfuse]'")
+    _langfuse_available = False
 from genops.core.context_manager import track, track_enhanced
 
 # Multi-provider cost aggregation
@@ -89,6 +97,7 @@ __all__ = [
     "get_framework_status",
     # Provider integrations
     "instrument_helicone",
+    "instrument_langfuse",
     # Attribution context management
     "set_default_attributes",
     "get_default_attributes",

@@ -120,6 +120,36 @@ except ImportError:
 
     _helicone_available = False
 
+try:
+    from genops.providers.langfuse import (
+        instrument_langfuse,
+        GenOpsLangfuseAdapter,
+        create_langfuse_adapter,
+    )
+    from genops.providers.langfuse_validation import (
+        validate_setup as validate_langfuse_setup,
+        print_validation_result as print_langfuse_validation_result,
+    )
+    _langfuse_available = True
+except ImportError:
+    # Create stub functions for unavailable providers
+    def instrument_langfuse(*args, **kwargs):
+        raise ImportError("Langfuse provider not available. Install with: pip install 'genops[langfuse]'")
+
+    def GenOpsLangfuseAdapter(*args, **kwargs):
+        raise ImportError("Langfuse provider not available. Install with: pip install 'genops[langfuse]'")
+    
+    def create_langfuse_adapter(*args, **kwargs):
+        raise ImportError("Langfuse provider not available. Install with: pip install 'genops[langfuse]'")
+    
+    def validate_langfuse_setup(*args, **kwargs):
+        raise ImportError("Langfuse provider not available. Install with: pip install 'genops[langfuse]'")
+    
+    def print_langfuse_validation_result(*args, **kwargs):
+        raise ImportError("Langfuse provider not available. Install with: pip install 'genops[langfuse]'")
+
+    _langfuse_available = False
+
 # Explicit __all__ definition with all available exports
 __all__ = [
     "instrument_openai",
@@ -141,4 +171,9 @@ __all__ = [
     "create_helicone_adapter",
     "validate_helicone_setup",
     "print_helicone_validation_result",
+    "instrument_langfuse",
+    "GenOpsLangfuseAdapter",
+    "create_langfuse_adapter",
+    "validate_langfuse_setup",
+    "print_langfuse_validation_result",
 ]
