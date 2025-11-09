@@ -150,6 +150,36 @@ except ImportError:
 
     _langfuse_available = False
 
+try:
+    from genops.providers.arize import (
+        instrument_arize,
+        auto_instrument as auto_instrument_arize,
+        GenOpsArizeAdapter,
+    )
+    from genops.providers.arize_validation import (
+        validate_setup as validate_arize_setup,
+        print_validation_result as print_arize_validation_result,
+    )
+    _arize_available = True
+except ImportError:
+    # Create stub functions for unavailable providers
+    def instrument_arize(*args, **kwargs):
+        raise ImportError("Arize provider not available. Install with: pip install 'genops[arize]'")
+
+    def auto_instrument_arize(*args, **kwargs):
+        raise ImportError("Arize provider not available. Install with: pip install 'genops[arize]'")
+
+    def GenOpsArizeAdapter(*args, **kwargs):
+        raise ImportError("Arize provider not available. Install with: pip install 'genops[arize]'")
+    
+    def validate_arize_setup(*args, **kwargs):
+        raise ImportError("Arize provider not available. Install with: pip install 'genops[arize]'")
+    
+    def print_arize_validation_result(*args, **kwargs):
+        raise ImportError("Arize provider not available. Install with: pip install 'genops[arize]'")
+
+    _arize_available = False
+
 # Explicit __all__ definition with all available exports
 __all__ = [
     "instrument_openai",
@@ -176,4 +206,9 @@ __all__ = [
     "create_langfuse_adapter",
     "validate_langfuse_setup",
     "print_langfuse_validation_result",
+    "instrument_arize",
+    "auto_instrument_arize",
+    "GenOpsArizeAdapter",
+    "validate_arize_setup",
+    "print_arize_validation_result",
 ]

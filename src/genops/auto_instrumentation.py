@@ -45,6 +45,13 @@ class GenOpsInstrumentor:
             _bedrock_patch_available = True
         except ImportError:
             _bedrock_patch_available = False
+        
+        # Import Arize AI provider with error handling
+        try:
+            from genops.providers.arize import auto_instrument as arize_auto_instrument
+            _arize_patch_available = True
+        except ImportError:
+            _arize_patch_available = False
 
         self.provider_patches = {
             "openai": {
@@ -78,6 +85,16 @@ class GenOpsInstrumentor:
                 "module": "boto3",
                 "provider_type": "llm_api",
                 "framework_type": "inference",
+            }
+        
+        # Add Arize AI to registry if available
+        if _arize_patch_available:
+            self.provider_patches["arize"] = {
+                "patch": lambda **kwargs: arize_auto_instrument(**kwargs),
+                "unpatch": lambda: None,  # Arize uses different instrumentation pattern
+                "module": "arize",
+                "provider_type": "ml_observability",
+                "framework_type": "monitoring",
             }
 
         # Framework providers will be added dynamically as they're implemented

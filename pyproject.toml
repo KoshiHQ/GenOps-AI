@@ -63,6 +63,7 @@ replicate = ["replicate>=0.20.0"]
 openrouter = ["openai>=1.0.0"]
 helicone = ["requests>=2.25.0"]
 langfuse = ["langfuse>=2.0.0"]
+arize = ["arize>=6.0.0", "pandas>=1.3.0"]
 docs = [
     "mkdocs>=1.5.0",
     "mkdocs-material>=9.4.0",
@@ -81,6 +82,7 @@ all = [
     "genops[openrouter]",
     "genops[helicone]",
     "genops[langfuse]",
+    "genops[arize]",
 ]
 dev = [
     "pytest>=7.0.0",
