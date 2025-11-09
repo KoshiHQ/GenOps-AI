@@ -358,10 +358,7 @@ class GenOpsPostHogAdapter(GovernanceProvider):
         self.monthly_costs = Decimal('0')
         
         # Telemetry
-        self.telemetry = GenOpsTelemetry(
-            provider_name="posthog",
-            tags=self._build_base_tags(tags or {})
-        )
+        self.telemetry = GenOpsTelemetry(tracer_name="posthog")
         
         # Active sessions
         self._active_sessions: Dict[str, PostHogAnalyticsSession] = {}

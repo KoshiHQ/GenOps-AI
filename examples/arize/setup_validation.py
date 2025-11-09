@@ -100,7 +100,7 @@ def run_comprehensive_validation():
         result = validate_setup()
         
         # Print detailed results
-        print_validation_result(result, show_details=True)
+        print_validation_result(result)
         
         return result
         
