@@ -889,7 +889,13 @@ def interactive_setup_wizard() -> Dict[str, Any]:
         print()
         print("adapter = GenOpsPerplexityAdapter(")
         for key, value in config.items():
-            if isinstance(value, str):
+            # Security: Don't log sensitive information
+            if key.lower() in ('api_key', 'password', 'token', 'secret'):
+                if isinstance(value, str):
+                    print(f"    {key}=\"***REDACTED***\",")
+                else:
+                    print(f"    {key}=\"***REDACTED***\",")
+            elif isinstance(value, str):
                 print(f"    {key}=\"{value}\",")
             else:
                 print(f"    {key}={value},")
