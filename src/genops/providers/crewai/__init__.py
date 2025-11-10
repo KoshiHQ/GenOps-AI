@@ -37,6 +37,15 @@ from typing import Any
 
 logger = logging.getLogger(__name__)
 
+# Pre-import critical exports to ensure they're available for __all__
+try:
+    from genops.providers.crewai.cost_aggregator import create_chain_cost_context as _create_chain_cost_context
+except ImportError:
+    def _create_chain_cost_context(chain_id: str):
+        """Fallback implementation if cost_aggregator is not available."""
+        from genops.providers.crewai.cost_aggregator import create_chain_cost_context
+        return create_chain_cost_context(chain_id)
+
 # Lazy import registry to avoid circular dependencies
 _import_cache = {}
 
@@ -412,15 +421,20 @@ def __getattr__(name: str) -> Any:
         return _import_cache[name]
     
     # Cost aggregator imports
+    elif name == 'create_chain_cost_context':
+        # Use pre-imported function to ensure it's always available
+        _import_cache['create_chain_cost_context'] = _create_chain_cost_context
+        return _create_chain_cost_context
+        
     elif name in ('CrewAICostAggregator', 'AgentCostEntry', 'CrewCostSummary',
                   'ProviderCostSummary', 'CostOptimizationRecommendation', 
                   'CostAnalysisResult', 'ProviderType', 'create_crewai_cost_context',
-                  'multi_provider_cost_tracking', 'create_chain_cost_context'):
+                  'multi_provider_cost_tracking'):
         from genops.providers.crewai.cost_aggregator import (
             CrewAICostAggregator, AgentCostEntry, CrewCostSummary,
             ProviderCostSummary, CostOptimizationRecommendation,
             CostAnalysisResult, ProviderType, create_crewai_cost_context,
-            multi_provider_cost_tracking, create_chain_cost_context
+            multi_provider_cost_tracking
         )
         _import_cache.update({
             'CrewAICostAggregator': CrewAICostAggregator,
@@ -431,8 +445,7 @@ def __getattr__(name: str) -> Any:
             'CostAnalysisResult': CostAnalysisResult,
             'ProviderType': ProviderType,
             'create_crewai_cost_context': create_crewai_cost_context,
-            'multi_provider_cost_tracking': multi_provider_cost_tracking,
-            'create_chain_cost_context': create_chain_cost_context
+            'multi_provider_cost_tracking': multi_provider_cost_tracking
         })
         return _import_cache[name]
     

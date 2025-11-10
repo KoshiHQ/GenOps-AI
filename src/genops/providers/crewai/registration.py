@@ -32,6 +32,7 @@ import threading
 import weakref
 from typing import Any, Callable, Dict, List, Optional, Set, Type, Union, TYPE_CHECKING
 import inspect
+from decimal import Decimal
 
 # GenOps imports - using TYPE_CHECKING to avoid circular imports
 if TYPE_CHECKING:
@@ -215,7 +216,6 @@ def _create_instrumented_crew_kickoff():
                                 
                                 # Import at runtime to avoid circular imports
                                 from genops.providers.crewai.adapter import CrewAIAgentResult
-                                from decimal import Decimal
                                 
                                 # Estimate cost based on agent complexity
                                 estimated_cost = _estimate_agent_cost(agent_role, inputs or {})
@@ -272,9 +272,8 @@ def _create_instrumented_crew_kickoff():
     return instrumented_kickoff
 
 
-def _estimate_agent_cost(agent_role: str, inputs: Dict[str, Any]) -> 'Decimal':
+def _estimate_agent_cost(agent_role: str, inputs: Dict[str, Any]) -> Decimal:
     """Estimate cost for an agent based on its role and inputs."""
-    from decimal import Decimal
     
     # Cost estimates by agent role
     role_base_costs = {
