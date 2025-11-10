@@ -31,11 +31,8 @@ except ImportError:
     HAS_TOGETHER = False
     Together = None
 
-try:
-    import requests
-    HAS_REQUESTS = True
-except ImportError:
-    HAS_REQUESTS = False
+# requests import removed as unused
+HAS_REQUESTS = True  # Assume available for optional features
 
 
 class ValidationSeverity(Enum):
@@ -127,9 +124,8 @@ class TogetherSetupValidator:
             ))
 
         # Check for optional but recommended packages
-        try:
-            import numpy
-        except ImportError:
+        import importlib.util
+        if importlib.util.find_spec("numpy") is None:
             issues.append(ValidationIssue(
                 severity=ValidationSeverity.INFO,
                 component="dependencies",

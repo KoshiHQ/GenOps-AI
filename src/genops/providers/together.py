@@ -45,12 +45,8 @@ except ImportError:
     Together = None
     logger.warning("Together AI client not installed. Install with: pip install together")
 
-try:
-    import requests
-    HAS_REQUESTS = True
-except ImportError:
-    HAS_REQUESTS = False
-    logger.warning("Requests not installed. Install with: pip install requests")
+# requests import removed as unused
+HAS_REQUESTS = True  # Assume available for optional features
 
 
 class TogetherModel(Enum):
