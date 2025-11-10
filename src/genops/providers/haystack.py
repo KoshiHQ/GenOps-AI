@@ -51,10 +51,24 @@ class _LazyImportSentinel:
 # Placeholder definitions for exported symbols (satisfies static analysis while maintaining lazy loading)
 # These sentinels will be replaced by actual imports when accessed
 
-# Core classes
-GenOpsHaystackAdapter = _LazyImportSentinel("GenOpsHaystackAdapter")
-HaystackMonitor = _LazyImportSentinel("HaystackMonitor")
-HaystackCostAggregator = _LazyImportSentinel("HaystackCostAggregator")
+# Callable class placeholders for instantiable classes
+def GenOpsHaystackAdapter(*args, **kwargs):
+    """Lazy-loaded GenOpsHaystackAdapter class."""
+    real_class = __getattr__('GenOpsHaystackAdapter')
+    globals()['GenOpsHaystackAdapter'] = real_class  # Replace placeholder
+    return real_class(*args, **kwargs)
+
+def HaystackMonitor(*args, **kwargs):
+    """Lazy-loaded HaystackMonitor class."""
+    real_class = __getattr__('HaystackMonitor')
+    globals()['HaystackMonitor'] = real_class
+    return real_class(*args, **kwargs)
+
+def HaystackCostAggregator(*args, **kwargs):
+    """Lazy-loaded HaystackCostAggregator class."""
+    real_class = __getattr__('HaystackCostAggregator')
+    globals()['HaystackCostAggregator'] = real_class
+    return real_class(*args, **kwargs)
 
 # Data classes
 HaystackComponentResult = _LazyImportSentinel("HaystackComponentResult")
@@ -94,8 +108,12 @@ def is_instrumented(*args, **kwargs):
     globals()['is_instrumented'] = real_func
     return real_func(*args, **kwargs)
 
-# Class sentinels remain as sentinels
-TemporaryInstrumentation = _LazyImportSentinel("TemporaryInstrumentation")
+# Callable class placeholder for context manager class
+def TemporaryInstrumentation(*args, **kwargs):
+    """Lazy-loaded TemporaryInstrumentation class."""
+    real_class = __getattr__('TemporaryInstrumentation')
+    globals()['TemporaryInstrumentation'] = real_class
+    return real_class(*args, **kwargs)
 
 # Validation functions (callable)
 def validate_haystack_setup(*args, **kwargs):
