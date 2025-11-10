@@ -32,12 +32,13 @@ Features:
 import functools
 import logging
 import threading
-from typing import Any, Callable, Dict, Optional, Set, Type
+from typing import TYPE_CHECKING, Any, Callable, Dict, Optional, Set, Type
 
-# GenOps imports
-from genops.providers.haystack_adapter import GenOpsHaystackAdapter
-from genops.providers.haystack_cost_aggregator import HaystackCostAggregator
-from genops.providers.haystack_monitor import HaystackMonitor
+# Use TYPE_CHECKING to avoid circular imports
+if TYPE_CHECKING:
+    from genops.providers.haystack_adapter import GenOpsHaystackAdapter
+    from genops.providers.haystack_cost_aggregator import HaystackCostAggregator
+    from genops.providers.haystack_monitor import HaystackMonitor
 
 logger = logging.getLogger(__name__)
 
@@ -117,6 +118,11 @@ class InstrumentationRegistry:
 
     def _initialize_components(self):
         """Initialize GenOps components with current configuration."""
+        # Lazy imports to avoid circular dependencies
+        from genops.providers.haystack_adapter import GenOpsHaystackAdapter
+        from genops.providers.haystack_cost_aggregator import HaystackCostAggregator
+        from genops.providers.haystack_monitor import HaystackMonitor
+        
         self.adapter = GenOpsHaystackAdapter(
             team=self.config["team"],
             project=self.config["project"],
@@ -547,12 +553,12 @@ def disable_auto_instrumentation():
             logger.error(f"Error disabling auto-instrumentation: {e}")
 
 
-def get_current_adapter() -> Optional[GenOpsHaystackAdapter]:
+def get_current_adapter() -> Optional["GenOpsHaystackAdapter"]:
     """Get the current auto-instrumentation adapter."""
     return _registry.adapter
 
 
-def get_current_monitor() -> Optional[HaystackMonitor]:
+def get_current_monitor() -> Optional["HaystackMonitor"]:
     """Get the current auto-instrumentation monitor."""
     return _registry.monitor
 
