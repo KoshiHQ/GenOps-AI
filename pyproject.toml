@@ -61,6 +61,7 @@ bedrock = ["boto3>=1.34.0"]
 gemini = ["google-generativeai>=0.3.0; python_version>='3.9'"]
 replicate = ["replicate>=0.20.0"]
 openrouter = ["openai>=1.0.0"]
+litellm = ["litellm>=1.0.0"]
 helicone = ["requests>=2.25.0"]
 langfuse = ["langfuse>=2.0.0"]
 arize = ["arize>=6.0.0", "pandas>=1.3.0"]
@@ -80,6 +81,7 @@ all = [
     "genops[bedrock]",
     "genops[gemini]",
     "genops[openrouter]",
+    "genops[litellm]",
     "genops[helicone]",
     "genops[langfuse]",
     "genops[arize]",
