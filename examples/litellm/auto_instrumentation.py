@@ -62,7 +62,7 @@ def check_requirements():
     for provider, env_var in api_key_checks.items():
         if os.getenv(env_var):
             api_keys_found.append(provider)
-            print(f"✅ {provider} API key configured")
+            print("✅ API key configured")
     
     if not api_keys_found:
         print("⚠️  No API keys configured")
@@ -70,7 +70,7 @@ def check_requirements():
         print("   Supported: OpenAI, Anthropic, Google, Azure, Cohere, and 95+ more")
         return False
     
-    print(f"🎯 Ready with {len(api_keys_found)} provider(s): {', '.join(api_keys_found)}")
+    print(f"🎯 Ready with {len(api_keys_found)} provider(s) configured")
     return True
 
 

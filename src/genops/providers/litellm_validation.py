@@ -516,9 +516,9 @@ def print_validation_result(result: ValidationResult, verbose: bool = True) -> N
     
     if result.provider_status:
         print(f"\n🔌 Provider Status:")
-        for provider, status in result.provider_status.items():
+        for index, (provider, status) in enumerate(result.provider_status.items(), 1):
             icon = status_icons[status]
-            print(f"   {icon} {provider}")
+            print(f"   {icon} Provider {index}")
     
     print("\n" + "="*60)
     

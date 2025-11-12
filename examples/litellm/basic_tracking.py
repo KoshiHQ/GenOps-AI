@@ -65,7 +65,7 @@ def check_setup():
         print("💡 Set at least one: export OPENAI_API_KEY=your_key")
         print("   Will use demo mode for tracking patterns demonstration")
     else:
-        print(f"🎯 Ready with {len(api_keys_found)} provider(s): {', '.join(api_keys_found)}")
+        print(f"🎯 Ready with {len(api_keys_found)} provider(s) configured")
     
     return True
 
