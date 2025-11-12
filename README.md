@@ -228,6 +228,36 @@ result = pipeline.run({"query": "What is RAG?"})
 
 ---
 
+## 🚀 Featured Integration: LiteLLM
+
+**The Highest-Leverage GenOps Integration** - Single instrumentation layer providing governance across 100+ LLM providers.
+
+```python
+# Zero-code setup for existing LiteLLM applications
+import litellm
+from genops.providers.litellm import auto_instrument
+
+# Enable governance across ALL 100+ providers
+auto_instrument(team="your-team", project="your-project")
+
+# Your existing LiteLLM code works unchanged - governance added automatically!
+response = litellm.completion(
+    model="gpt-4",  # Or claude-3, gemini-pro, any of 100+ models
+    messages=[{"role": "user", "content": "Hello!"}]
+)
+# ✅ Cost tracking, team attribution, compliance monitoring across entire ecosystem!
+```
+
+**What makes this game-changing:**
+- **🌍 Massive Coverage**: One GenOps integration → governance across 100+ LLM providers
+- **🔄 Provider-Agnostic**: Switch providers seamlessly while maintaining governance
+- **⚡ Zero Lock-in**: Built on OpenTelemetry standards with no vendor dependencies
+- **📈 Ecosystem Multiplier**: GenOps automatically scales with every new LiteLLM provider
+
+**[→ Try the 5-minute LiteLLM quickstart](docs/litellm-quickstart.md)** | **[📚 Complete integration guide](docs/integrations/litellm.md)** | **[🎯 Browse 7 examples](examples/litellm/)**
+
+---
+
 ## 🔧 How Teams Use GenOps Framework
 
 **Individual Developer Pattern**
@@ -252,7 +282,7 @@ As governance needs grow beyond what the framework can handle alone, teams typic
 
 ### 🧠 AI & LLM Ecosystem
 - ✅ [OpenRouter](https://github.com/KoshiHQ/GenOps-AI/tree/main/examples/openrouter) (<a href="https://openrouter.ai/" target="_blank">↗</a>)
-- ☐ [LiteLLM](https://docs.litellm.ai/) (<a href="https://docs.litellm.ai/" target="_blank">↗</a>) - Unified interface to 100+ LLM providers
+- ✅ [LiteLLM](https://github.com/KoshiHQ/GenOps-AI/tree/main/docs/litellm-quickstart.md) (<a href="https://docs.litellm.ai/" target="_blank">↗</a>) - **Highest-leverage integration**: Unified interface to 100+ LLM providers
 - ✅ [OpenAI](https://github.com/KoshiHQ/GenOps-AI/tree/main/examples/openai) (<a href="https://openai.com/" target="_blank">↗</a>)
 - ✅ [Anthropic](https://github.com/KoshiHQ/GenOps-AI/tree/main/examples/anthropic) (<a href="https://www.anthropic.com/" target="_blank">↗</a>)
 - ✅ [Hugging Face](https://github.com/KoshiHQ/GenOps-AI/tree/main/examples/huggingface) (<a href="https://huggingface.co/docs/inference-providers/index" target="_blank">↗</a>)
