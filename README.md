@@ -306,7 +306,7 @@ As governance needs grow beyond what the framework can handle alone, teams typic
 - ✅ [Arize AI](https://github.com/KoshiHQ/GenOps-AI/tree/main/examples/arize) (<a href="https://arize.com/" target="_blank">↗</a>)
 - ✅ [PostHog](https://github.com/KoshiHQ/GenOps-AI/tree/main/examples/posthog) (<a href="https://posthog.com/" target="_blank">↗</a>)
 - ✅ [Langfuse](https://github.com/KoshiHQ/GenOps-AI/tree/main/examples/langfuse) (<a href="https://langfuse.com/" target="_blank">↗</a>)
-- ✅ [AutoGen](docs/integrations/autogen.md) (<a href="https://github.com/microsoft/autogen" target="_blank">↗</a>) - Multi-agent conversation governance with comprehensive cost tracking
+- ✅ [AutoGen](docs/integrations/autogen.md) (<a href="https://github.com/microsoft/autogen" target="_blank">↗</a>)
 - ☐ Dust (<a href="https://dust.tt/" target="_blank">↗</a>)
 - ☐ Flowise (<a href="https://flowiseai.com/" target="_blank">↗</a>)
 - ☐ Griptape (<a href="https://www.griptape.ai/" target="_blank">↗</a>)
