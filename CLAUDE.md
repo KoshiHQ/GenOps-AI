@@ -466,9 +466,67 @@ If the answer is not an emphatic "yes," the implementation is not ready for rele
 
 ---
 
+## README Integration List Formatting Standards (MANDATORY)
+
+### Critical Formatting Requirements
+
+**This section addresses a recurring issue that MUST be prevented going forward.**
+
+### Approved Format Patterns (ONLY these are allowed):
+
+**✅ Completed Integrations:**
+```
+- ✅ [Name](internal-link) (<a href="external-link" target="_blank">↗</a>)
+```
+
+**☐ Planned Integrations:**
+```
+- ☐ Name (<a href="external-link" target="_blank">↗</a>)
+```
+
+### FORBIDDEN Patterns (These cause violations):
+
+**❌ NEVER add descriptive text:**
+```
+- ✅ [Name](link) (<a href="external" target="_blank">↗</a>) - Any descriptive text here
+```
+
+**❌ NEVER add explanations:**
+```
+- ✅ [Name](link) (<a href="external" target="_blank">↗</a>) - Multi-agent conversation governance
+```
+
+### Enforcement Mechanisms
+
+This formatting standard is enforced by:
+
+1. **Pre-commit Hook**: `scripts/validate-readme-format.py` runs on every commit
+2. **CI/CD Validation**: GitHub Actions workflow validates all README changes
+3. **Automated Detection**: Pattern matching detects violations automatically
+4. **Developer Guidelines**: This CLAUDE.md section provides clear rules
+
+### Historical Context
+
+The user has explicitly stated: *"remember that we are never supposed to add anything other than name and links for these, this should be in your CLAUDE.md memory"*
+
+This recurring issue has been identified as a pattern that must be prevented through comprehensive automated validation and clear documentation.
+
+### Implementation Details
+
+- **Validation Script**: `scripts/validate-readme-format.py`
+- **Pre-commit Integration**: `.pre-commit-config.yaml` includes README validation
+- **GitHub Actions**: `.github/workflows/validate-readme-format.yml`
+- **Error Messages**: Provide specific fix suggestions for each violation type
+
+**When working with the README integration list, NEVER add descriptive text. Only include the integration name and required links.**
+
+---
+
 ### TL;DR (for Claude Code)
 
 > GenOps AI extends OpenTelemetry with governance semantics for AI systems —
 > **cross-stack tracking without vendor lock-in.**
 > It defines open-source telemetry standards for AI cost, policy, and compliance.
 > Built and maintained as an open-source project under the Apache 2.0 license.
+> 
+> **CRITICAL**: README integration entries must NEVER include descriptive text - only name and links are allowed.

@@ -77,6 +77,16 @@ repos:
           - mdformat-black
         exclude: (CHANGELOG\.md|\.github/)
 
+  # README format validation (prevents recurring formatting violations)
+  - repo: local
+    hooks:
+      - id: validate-readme-format
+        name: Validate README Integration Format
+        entry: python3 scripts/validate-readme-format.py
+        language: system
+        files: README\.md
+        pass_filenames: false
+
   # Commit message formatting
   - repo: https://github.com/compilerla/conventional-pre-commit
     rev: v3.0.0
