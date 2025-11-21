@@ -308,7 +308,7 @@ As governance needs grow beyond what the framework can handle alone, teams typic
 - ✅ [Langfuse](https://github.com/KoshiHQ/GenOps-AI/tree/main/examples/langfuse) (<a href="https://langfuse.com/" target="_blank">↗</a>)
 - ✅ [AutoGen](docs/integrations/autogen.md) (<a href="https://github.com/microsoft/autogen" target="_blank">↗</a>)
 - ✅ [Dust](docs/dust-quickstart.md) (<a href="https://dust.tt/" target="_blank">↗</a>)
-- ☐ Flowise (<a href="https://flowiseai.com/" target="_blank">↗</a>)
+- ✅ [Flowise](docs/flowise-quickstart.md) (<a href="https://flowiseai.com/" target="_blank">↗</a>)
 - ☐ Griptape (<a href="https://www.griptape.ai/" target="_blank">↗</a>)
 - ☐ SkyRouter (<a href="https://skyrouter.ai/" target="_blank">↗</a>)
 - ☐ Databricks Unity Catalog (<a href="https://docs.databricks.com/en/data-governance/unity-catalog/index.html" target="_blank">↗</a>)

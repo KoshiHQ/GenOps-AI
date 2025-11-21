@@ -320,3 +320,207 @@ def cleanup_test_state():
                 pass  # Ignore cleanup errors
         # Only reset initialization flag, not the instance itself
         GenOpsInstrumentor._initialized = False
+
+
+# Flowise-specific test fixtures and utilities
+
+# Test configuration constants for Flowise
+TEST_FLOWISE_BASE_URL = "http://localhost:3000"
+TEST_FLOWISE_API_KEY = "test-api-key-12345"
+TEST_CHATFLOW_ID = "test-chatflow-abc123"
+
+# Sample Flowise test data
+SAMPLE_CHATFLOWS = [
+    {"id": "customer-support", "name": "Customer Support Assistant"},
+    {"id": "sales-assistant", "name": "Sales Assistant"},
+    {"id": "technical-help", "name": "Technical Help Desk"},
+    {"id": "general-qa", "name": "General Q&A Bot"}
+]
+
+SAMPLE_FLOWISE_RESPONSES = [
+    {"text": "Hello! How can I help you today?"},
+    {"text": "I understand you're asking about artificial intelligence. Let me explain..."},
+    {"text": "Based on your question, here are some key points to consider..."},
+    {"text": "Is there anything else you'd like to know about this topic?"}
+]
+
+
+@pytest.fixture
+def flowise_base_url():
+    """Provide test Flowise base URL."""
+    return TEST_FLOWISE_BASE_URL
+
+
+@pytest.fixture
+def flowise_api_key():
+    """Provide test Flowise API key."""
+    return TEST_FLOWISE_API_KEY
+
+
+@pytest.fixture
+def test_chatflow_id():
+    """Provide test chatflow ID."""
+    return TEST_CHATFLOW_ID
+
+
+@pytest.fixture
+def sample_chatflows():
+    """Provide sample chatflow data."""
+    return SAMPLE_CHATFLOWS.copy()
+
+
+@pytest.fixture
+def sample_flowise_responses():
+    """Provide sample Flowise response data."""
+    return SAMPLE_FLOWISE_RESPONSES.copy()
+
+
+@pytest.fixture
+def mock_successful_flowise_get():
+    """Mock successful Flowise GET requests."""
+    mock_response = MagicMock()
+    mock_response.status_code = 200
+    mock_response.json.return_value = SAMPLE_CHATFLOWS
+    mock_response.elapsed.total_seconds.return_value = 0.15
+    return mock_response
+
+
+@pytest.fixture  
+def mock_successful_flowise_post():
+    """Mock successful Flowise POST requests."""
+    mock_response = MagicMock()
+    mock_response.status_code = 200
+    mock_response.json.return_value = SAMPLE_FLOWISE_RESPONSES[0]
+    return mock_response
+
+
+@pytest.fixture
+def mock_failed_flowise_request():
+    """Mock failed Flowise requests."""
+    mock_response = MagicMock()
+    mock_response.status_code = 500
+    mock_response.text = "Internal Server Error"
+    return mock_response
+
+
+@pytest.fixture
+def mock_auth_error_flowise_request():
+    """Mock authentication error Flowise requests."""
+    mock_response = MagicMock()
+    mock_response.status_code = 401
+    mock_response.text = "Unauthorized"
+    return mock_response
+
+
+@pytest.fixture
+def sample_flowise_governance_config():
+    """Provide sample Flowise governance configuration."""
+    return {
+        "team": "test-engineering",
+        "project": "flowise-integration-tests",
+        "customer_id": "test-customer-789",
+        "environment": "test",
+        "cost_center": "eng-ai-testing",
+        "feature": "chatflow-automation"
+    }
+
+
+@pytest.fixture
+def mock_flowise_server(mock_successful_flowise_get, mock_successful_flowise_post):
+    """Complete mock Flowise server with GET and POST endpoints."""
+    with patch('requests.get', return_value=mock_successful_flowise_get) as mock_get:
+        with patch('requests.post', return_value=mock_successful_flowise_post) as mock_post:
+            yield {
+                'get': mock_get,
+                'post': mock_post,
+                'get_response': mock_successful_flowise_get,
+                'post_response': mock_successful_flowise_post
+            }
+
+
+class MockFlowiseServer:
+    """Mock Flowise server for integration testing."""
+    
+    def __init__(self):
+        self.chatflows = SAMPLE_CHATFLOWS.copy()
+        self.responses = SAMPLE_FLOWISE_RESPONSES.copy()
+        self.request_count = 0
+        self.sessions = {}
+        
+    def get_chatflows_response(self):
+        """Get mock chatflows response."""
+        self.request_count += 1
+        mock_response = MagicMock()
+        mock_response.status_code = 200
+        mock_response.json.return_value = self.chatflows
+        mock_response.elapsed.total_seconds.return_value = 0.1
+        return mock_response
+    
+    def predict_flow_response(self, request_data: dict):
+        """Get mock prediction response based on request data."""
+        self.request_count += 1
+        
+        # Simulate session-aware responses
+        session_id = request_data.get('sessionId')
+        if session_id:
+            if session_id not in self.sessions:
+                self.sessions[session_id] = []
+            self.sessions[session_id].append(request_data.get('question', ''))
+        
+        mock_response = MagicMock()
+        mock_response.status_code = 200
+        
+        # Vary response based on request
+        response_idx = len(self.sessions.get(session_id, [])) - 1 if session_id else 0
+        response_idx = min(response_idx, len(self.responses) - 1)
+        
+        mock_response.json.return_value = self.responses[response_idx]
+        return mock_response
+    
+    def simulate_error(self, error_type="server_error"):
+        """Simulate various error conditions."""
+        mock_response = MagicMock()
+        
+        if error_type == "server_error":
+            mock_response.status_code = 500
+            mock_response.text = "Internal Server Error"
+        elif error_type == "auth_error":
+            mock_response.status_code = 401
+            mock_response.text = "Unauthorized"
+        elif error_type == "not_found":
+            mock_response.status_code = 404
+            mock_response.text = "Not Found"
+        elif error_type == "rate_limit":
+            mock_response.status_code = 429
+            mock_response.text = "Rate Limited"
+        
+        return mock_response
+
+
+@pytest.fixture
+def mock_flowise_server_instance():
+    """Provide MockFlowiseServer instance."""
+    return MockFlowiseServer()
+
+
+# Utility functions for Flowise test assertions
+def assert_valid_flowise_adapter(adapter):
+    """Assert that a Flowise adapter is properly configured."""
+    assert adapter is not None
+    assert hasattr(adapter, 'base_url')
+    assert hasattr(adapter, 'team')
+    assert hasattr(adapter, 'project')
+    assert adapter.base_url
+    assert adapter.team
+    assert adapter.project
+
+
+def assert_valid_flowise_validation_result(result):
+    """Assert that a Flowise validation result is properly structured."""
+    assert result is not None
+    assert hasattr(result, 'is_valid')
+    assert hasattr(result, 'issues')
+    assert hasattr(result, 'summary')
+    assert isinstance(result.is_valid, bool)
+    assert isinstance(result.issues, list)
+    assert isinstance(result.summary, str)
