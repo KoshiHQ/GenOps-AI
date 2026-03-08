@@ -67,11 +67,19 @@ This specification defines:
 
 ### 1.3 Relationship to OpenTelemetry
 
-GenOps extends OpenTelemetry. It defines additional semantic conventions in the `genops.*` attribute namespace. All GenOps telemetry MUST be representable using standard OpenTelemetry signals (traces, metrics, logs). GenOps does not modify, replace, or conflict with existing OpenTelemetry semantic conventions.
+GenOps extends OpenTelemetry. It defines additional semantic conventions in the `genops.*` attribute namespace. All GenOps telemetry MUST be representable using standard OpenTelemetry signals (traces, metrics, logs). GenOps does not modify, replace, or conflict with existing OpenTelemetry semantic conventions. In particular, the [OpenTelemetry Semantic Conventions for Generative AI](https://opentelemetry.io/docs/specs/semconv/gen-ai/) define descriptive attributes for model invocations, token usage, and tool calls. GenOps occupies a complementary domain: it defines the governance contract—policy decisions, accounting invariants, and enforcement outcomes—rather than descriptive execution telemetry. Implementations that emit both GenOps and GenAI signals produce a richer observability picture without overlap or conflict.
 
 ### 1.4 Versioning
 
 This is version 0.1.0 of the GenOps Governance Specification. The specification follows [Semantic Versioning 2.0.0](https://semver.org/). For version 1.0.0 and later, backwards-incompatible changes increment the major version. New attributes, events, or reason codes that do not remove or change existing definitions increment the minor version. For pre-1.0 stability rules, see Section 11.1. See Section 11 for the full versioning and compatibility policy.
+
+### 1.5 Interoperability with OpenTelemetry GenAI
+
+GenOps is designed to coexist with OpenTelemetry GenAI semantic conventions without requiring them:
+
+- **Correlation, not ownership.** When upstream identifiers such as `trace_id`, `span_id`, or optional session, conversation, and workflow identifiers are present, GenOps implementations MAY propagate them as correlation context. These identifiers are not GenOps normative identity; AWU identity is defined in Section 2.2.
+- **Topology agnostic.** GenOps does not prescribe instrumentation topology. It applies equally whether instrumentation is at the client, framework, server, or runtime layer.
+- **External signals as inputs.** Descriptive signals—retrieval context, memory state, tool invocations, guardrail findings, token-level usage telemetry—MAY inform governance decisions (e.g., a guardrail finding contributing to a BLOCKED enforcement outcome). GenOps does not standardize the schemas of those descriptive signals; it standardizes the governance outcome.
 
 ---
 
@@ -553,6 +561,10 @@ The following are explicitly out of scope for this specification:
 - **Agent orchestration.** Multi-agent graph topology, coordination protocols, and agent lifecycle management are not defined.
 - **Data retention or storage format.** The specification defines wire-level semantics, not storage.
 - **Specific SLA tier definitions.** Tiers are organization-defined. The specification defines the attribute schema only.
+- **Tracing topology semantics.** Distributed tracing structure (parent/child spans, trace propagation) is not defined by GenOps.
+- **Session, conversation, or workflow identity.** GenOps does not define these scoping constructs. GenOps MAY correlate with them when present but does not own or standardize them.
+- **Instrumentation APIs.** GenOps defines a semantic contract, not an instrumentation SDK or API surface.
+- **Provider-specific token or guardrail telemetry schemas.** GenOps does not define descriptive telemetry for token counts, guardrail evaluations, or similar signals. These schemas are the concern of observability conventions and provider SDKs.
 
 ---
 
