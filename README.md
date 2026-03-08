@@ -70,6 +70,8 @@ GenOps does not modify or replace existing OpenTelemetry semantics.
 
 GenOps defines governance semantics. OpenTelemetry defines observability transport and structure. They are complementary.
 
+The [OpenTelemetry GenAI semantic conventions](https://opentelemetry.io/docs/specs/semconv/gen-ai/) describe execution-level details such as model calls and token usage. GenOps defines the governance layer—policy decisions, accounting, and enforcement—and is designed to coexist with GenAI signals without overlap. Implementations MAY correlate GenOps telemetry with GenAI identifiers for a unified observability view.
+
 ---
 
 ## Compliance
@@ -101,6 +103,7 @@ GenOps does not define:
 - UI requirements
 - Model routing strategies
 - Authentication or authorization
+- Tracing topology, session/conversation identity, instrumentation APIs, or provider-specific telemetry schemas
 
 These concerns may be built on top of GenOps, but are outside the scope of the specification.
 
